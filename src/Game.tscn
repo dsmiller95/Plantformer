@@ -1,0 +1,80 @@
+[gd_scene load_steps=11 format=3 uid="uid://cywpu6lxdjhuu"]
+
+[ext_resource type="Script" uid="uid://dlpnodv0qc0uo" path="res://src/Game.cs" id="1_17mmo"]
+[ext_resource type="Script" uid="uid://bom38vjvkhw7f" path="res://src/PlayerController.cs" id="2_kqvf5"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqjwq"]
+
+[sub_resource type="Gradient" id="Gradient_8ec3e"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_38a0m"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7omc5"]
+width = 10
+height = 10
+color_ramp = SubResource("Gradient_8ec3e")
+noise = SubResource("FastNoiseLite_38a0m")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_km1yn"]
+size = Vector2(660, 118)
+
+[sub_resource type="Gradient" id="Gradient_chrbn"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5qjmp"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eu8jo"]
+width = 500
+height = 100
+color_ramp = SubResource("Gradient_chrbn")
+noise = SubResource("FastNoiseLite_5qjmp")
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_17mmo")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="TestButton" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Test Button"
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="Node2D"]
+position = Vector2(405, 494)
+script = ExtResource("2_kqvf5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/CharacterBody2D"]
+shape = SubResource("CapsuleShape2D_lqjwq")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/CharacterBody2D/CollisionShape2D"]
+position = Vector2(0.500009, 0.250011)
+scale = Vector2(1.5, 2.65)
+texture = SubResource("NoiseTexture2D_7omc5")
+
+[node name="Floor" type="StaticBody2D" parent="Node2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor"]
+position = Vector2(357, 613)
+shape = SubResource("RectangleShape2D_km1yn")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor/CollisionShape2D"]
+position = Vector2(15, -4)
+texture = SubResource("NoiseTexture2D_eu8jo")
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]
