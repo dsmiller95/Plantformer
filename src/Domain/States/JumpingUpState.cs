@@ -1,7 +1,7 @@
 ﻿namespace Plantformer.Domain.States;
 
 using Character;
-using StateMachine;
+using StateInterfaces;
 
 public record JumpingUpState(
   CharacterOptions Options,

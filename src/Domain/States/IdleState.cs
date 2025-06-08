@@ -2,7 +2,7 @@
 
 using System;
 using Character;
-using StateMachine;
+using StateInterfaces;
 
 public record IdleState(
   CharacterOptions Options,

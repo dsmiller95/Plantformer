@@ -1,4 +1,4 @@
-﻿namespace Plantformer.Domain.StateMachine;
+﻿namespace Plantformer.Domain.StateInterfaces;
 
 using System;
 using Character;

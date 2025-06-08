@@ -1,7 +1,7 @@
-﻿namespace Plantformer.Domain.StateMachine;
+﻿namespace Plantformer.Domain.StateInterfaces;
 
-using Character;
 using Chickensoft.Log;
+using Character;
 
 public class StateMachine(IState state) {
   private IState _state = state;

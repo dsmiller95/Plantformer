@@ -6,15 +6,12 @@
  *     IState, StateMachine, CoyoteState, CharacterEngine, etc.
  */
 
-using System;
 using Godot;
 
 namespace Plantformer;
 
-using Chickensoft.Log;
-using Domain;
 using Domain.Character;
-using Domain.StateMachine;
+using Domain.StateInterfaces;
 using Domain.States;
 
 public partial class PlayerController : CharacterBody2D {
@@ -45,35 +42,7 @@ public partial class PlayerController : CharacterBody2D {
       JumpGravity = JumpGravity,
     };
 
-    var entryState = BuildStateGraph(options);
-    _stateMachine = new StateMachine(entryState);
-  }
-
-  private static IState BuildStateGraph(CharacterOptions options) {
-    IState idle = null!;
-    IState walking = null!;
-    IState jumping = null!;
-    IState falling = null!;
-
-    idle = new IdleState(options,
-      WalkingState: new LambdaStateDefinition(ctx => walking),
-      JumpingState: new LambdaStateDefinition(ctx => jumping),
-      UnGroundedState: new LambdaStateDefinition(ctx => falling)
-      );
-    walking = new WalkingState(options,
-      IdleState: new LambdaStateDefinition(ctx => idle),
-      JumpingState: new LambdaStateDefinition(ctx => jumping),
-      UnGroundedState: new LambdaStateDefinition(ctx => falling)
-      );
-    jumping = new JumpingUpState(options,
-      GroundedState: new LambdaStateDefinition(ctx => walking),
-      FallingState: new LambdaStateDefinition(ctx => falling)
-      );
-    falling = new FallingState(options,
-      GroundedState: new LambdaStateDefinition(ctx => walking)
-      );
-
-    return idle;
+    _stateMachine = StateGraph.Build(options);
   }
 
   public override void _PhysicsProcess(double delta) {
