@@ -4,14 +4,12 @@ using System;
 using Character;
 
 public record WalkingState(
+  CharacterOptions Options,
   IStateDefinition IdleState,
-  IStateDefinition JumpingState,
-  float DeadZone = 0.1f,
-  float Speed = 50f,
-  float G = 800f): IState {
+  IStateDefinition JumpingState): IState {
 
   public IStateDefinition? Tick(CharacterContext context) {
-    if(Math.Abs(context.Input.MoveAxis) < DeadZone) {
+    if(Math.Abs(context.Input.MoveAxis) < Options.DeadZone) {
       return IdleState;
     }
 
@@ -19,8 +17,8 @@ public record WalkingState(
       return JumpingState;
     }
 
-    context.Physics.SetHorizontal(context.Input.MoveAxis * Speed);
-    context.ApplyGravity(G);
+    context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
+    context.ApplyGravity(Options.Gravity);
 
     return null;
   }

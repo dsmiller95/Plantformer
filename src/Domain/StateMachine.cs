@@ -23,7 +23,7 @@ public interface IState {
 
 public class StateMachine(IState state) {
   private IState _state = state;
-  private readonly Log _log = new(nameof(StateMachine), new ConsoleWriter(), new TraceWriter());
+  private readonly Log _log = new(nameof(StateMachine), new ConsoleWriter());
 
   public void Tick(CharacterContext context) {
     var transition = _state.Tick(context);

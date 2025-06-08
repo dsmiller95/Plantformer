@@ -3,20 +3,18 @@
 using Character;
 
 public record JumpingState(
-  IStateDefinition WalkingState,
-  float JumpTime = 1,
-  float Speed = 50f,
-  float JumpSpeed = 50f) : IState {
+  CharacterOptions Options,
+  IStateDefinition WalkingState) : IState {
 
   private float _jumpStartTime;
 
   public IStateDefinition? Tick(CharacterContext context) {
-    if(context.Clock.Now - _jumpStartTime > JumpTime) {
+    if(context.Clock.Now - _jumpStartTime > Options.JumpTime) {
       return WalkingState;
     }
 
-    context.Physics.SetHorizontal(context.Input.MoveAxis * Speed);
-    context.Physics.SetVertical(JumpSpeed);
+    context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
+    context.Physics.SetVertical(Options.JumpSpeed);
 
     return null;
   }

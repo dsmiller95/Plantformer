@@ -4,12 +4,11 @@ using System;
 using Character;
 
 public record IdleState(
+  CharacterOptions Options,
   IStateDefinition WalkingState,
-  IStateDefinition JumpingState,
-  float DeadZone = 0.1f,
-  float G = 800f): IState {
+  IStateDefinition JumpingState): IState {
   public IStateDefinition? Tick(CharacterContext context) {
-    if(Math.Abs(context.Input.MoveAxis) > DeadZone) {
+    if(Math.Abs(context.Input.MoveAxis) > Options.DeadZone) {
       return WalkingState;
     }
 
@@ -17,7 +16,7 @@ public record IdleState(
       return JumpingState;
     }
 
-    context.ApplyGravity(G);
+    context.ApplyGravity(Options.Gravity);
 
     return null;
   }

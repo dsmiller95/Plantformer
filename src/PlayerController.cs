@@ -34,29 +34,33 @@ public partial class PlayerController : CharacterBody2D {
   public override void _Ready() {
     _physics = new GodotPhysics(this);
 
+    var options = new CharacterOptions {
+      MoveSpeed = WalkSpeed,
+      JumpSpeed = JumpSpeed,
+      Gravity = Gravity,
+      DeadZone = 0.1f,
+      JumpTime = JumpTime
+    };
 
-    var entryState = BuildStateGraph();
+    var entryState = BuildStateGraph(options);
     _stateMachine = new StateMachine(entryState);
   }
 
-  private IState BuildStateGraph() {
+  private static IState BuildStateGraph(CharacterOptions options) {
     IState idle = null!;
     IState walking = null!;
     IState jumping = null!;
 
-    idle = new IdleState(
+    idle = new IdleState(options,
           WalkingState: new LambdaStateDefinition(ctx => walking),
           JumpingState: new LambdaStateDefinition(ctx => jumping)
         );
-    walking = new WalkingState(
+    walking = new WalkingState(options,
           IdleState: new LambdaStateDefinition(ctx => idle),
-          JumpingState: new LambdaStateDefinition(ctx => jumping),
-          Speed: WalkSpeed
+          JumpingState: new LambdaStateDefinition(ctx => jumping)
         );
-    jumping = new JumpingState(
-          WalkingState: new LambdaStateDefinition(ctx => walking),
-          JumpTime: JumpTime,
-          JumpSpeed: JumpSpeed
+    jumping = new JumpingState(options,
+          WalkingState: new LambdaStateDefinition(ctx => walking)
         );
 
     return idle;
