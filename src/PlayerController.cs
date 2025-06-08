@@ -19,9 +19,9 @@ using Domain.States;
 public partial class PlayerController : CharacterBody2D {
   // ---- Tunables ----------------------------------------------------------
   private const float WalkSpeed = 400f;
-  private const float JumpSpeed = 780f;
+  private const float JumpSpeed = 900f;
   private const float JumpTime = 1f;
-  private const float Gravity = -2000f;
+  private const float Gravity = -3000f;
   private const float CoyoteSecs = 0.18f;
   // ------------------------------------------------------------------------
 
