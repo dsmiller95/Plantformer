@@ -2,6 +2,7 @@
 
 using System;
 using Character;
+using StateMachine;
 
 public record WalkingState(
   CharacterOptions Options,

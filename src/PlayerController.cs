@@ -14,6 +14,7 @@ namespace Plantformer;
 using Chickensoft.Log;
 using Domain;
 using Domain.Character;
+using Domain.StateMachine;
 using Domain.States;
 
 public partial class PlayerController : CharacterBody2D {
