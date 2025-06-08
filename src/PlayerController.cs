@@ -18,10 +18,10 @@ using Domain.States;
 
 public partial class PlayerController : CharacterBody2D {
   // ---- Tunables ----------------------------------------------------------
-  private const float WalkSpeed = 130f;
-  private const float JumpSpeed = -780f; // negative = up in Godot
-  private const float JumpTime = 1f; // negative = up in Godot
-  private const float Gravity = 800f;
+  private const float WalkSpeed = 400f;
+  private const float JumpSpeed = 780f;
+  private const float JumpTime = 1f;
+  private const float Gravity = -2000f;
   private const float CoyoteSecs = 0.18f;
   // ------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ public partial class PlayerController : CharacterBody2D {
       Gravity = Gravity,
       DeadZone = 0.1f,
       JumpTime = JumpTime,
-      JumpGravity = Gravity * 0.5f,
+      JumpGravity = Gravity * 0.7f,
     };
 
     var entryState = BuildStateGraph(options);
@@ -72,7 +72,7 @@ public partial class PlayerController : CharacterBody2D {
     _stateMachine.Tick(context);
 
     // Add gravity and push the body
-    Velocity = Velocity with { Y = Velocity.Y + Gravity * (float)delta };
+    // Velocity = Velocity with { Y = Velocity.Y + Gravity * (float)delta };
     MoveAndSlide();
   }
 
@@ -93,8 +93,8 @@ public partial class PlayerController : CharacterBody2D {
 
   private sealed class GodotPhysics(CharacterBody2D body) : ICharacterPhysics {
     public bool IsGrounded => body.IsOnFloor();
-    public float VerticalVelocity => body.Velocity.Y;
+    public float VerticalVelocity => -body.Velocity.Y; // negative = up. flip so negative = down
     public void SetHorizontal(float vx) => body.Velocity = body.Velocity with { X = vx };
-    public void SetVertical(float vy) => body.Velocity = body.Velocity with { Y = vy };
+    public void SetVertical(float vy) => body.Velocity = body.Velocity with { Y = -vy };
   }
 }

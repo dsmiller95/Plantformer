@@ -14,7 +14,11 @@ public record JumpingState(
     }
 
     context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
-    context.ApplyGravity(Options.JumpGravity);
+    if (context.Physics.VerticalVelocity > 0) {
+      context.ApplyGravity(Options.JumpGravity);
+    }else {
+      context.ApplyGravity(Options.Gravity);
+    }
 
     return null;
   }
