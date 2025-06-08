@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://cywpu6lxdjhuu"]
+[gd_scene load_steps=8 format=3 uid="uid://cywpu6lxdjhuu"]
 
 [ext_resource type="Script" uid="uid://dlpnodv0qc0uo" path="res://src/Game.cs" id="1_17mmo"]
 [ext_resource type="Script" uid="uid://bom38vjvkhw7f" path="res://src/PlayerController.cs" id="2_kqvf5"]
+[ext_resource type="PackedScene" uid="uid://d3y4vq8pbq0j4" path="res://scenes/obstacles/platform.tscn" id="3_lqjwq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqjwq"]
 
@@ -14,19 +15,6 @@ width = 10
 height = 10
 color_ramp = SubResource("Gradient_8ec3e")
 noise = SubResource("FastNoiseLite_38a0m")
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_km1yn"]
-size = Vector2(500.5, 101.5)
-
-[sub_resource type="Gradient" id="Gradient_chrbn"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_5qjmp"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eu8jo"]
-width = 500
-height = 100
-color_ramp = SubResource("Gradient_chrbn")
-noise = SubResource("FastNoiseLite_5qjmp")
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -70,114 +58,63 @@ texture = SubResource("NoiseTexture2D_7omc5")
 [node name="Env" type="Node2D" parent="Node2D"]
 position = Vector2(0, -1)
 
-[node name="Floor" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(303, 681)
-scale = Vector2(0.499432, 0.337541)
+[node name="Floor" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(304, 682)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor"]
-shape = SubResource("RectangleShape2D_km1yn")
+[node name="Floor13" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(223, 806)
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
+[node name="Floor14" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(324, 925)
 
-[node name="Floor9" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(120, 764)
-scale = Vector2(12.0388, 0.34114)
+[node name="Floor15" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1094, 820)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor9"]
-shape = SubResource("RectangleShape2D_km1yn")
+[node name="Floor16" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1703, 831)
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor9/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
+[node name="Floor11" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(154, 208)
 
-[node name="Floor2" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(592, 624)
-scale = Vector2(0.499432, 0.337541)
+[node name="Floor12" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(551, 111)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor2"]
-shape = SubResource("RectangleShape2D_km1yn")
+[node name="Floor10" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1123, 1046)
+scale = Vector2(4.53295, 0.445604)
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor2/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
+[node name="Floor2" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(573, 621)
 
-[node name="Floor3" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(504, 392)
-scale = Vector2(0.0937274, 0.322894)
+[node name="Floor3" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(837, 500)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor3"]
-shape = SubResource("RectangleShape2D_km1yn")
+[node name="Floor4" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(561, 357)
+scale = Vector2(0.0870458, 0.354152)
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor3/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
+[node name="Floor5" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(439, 343)
+scale = Vector2(0.0870458, 0.354152)
 
-[node name="Floor4" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(602, 317)
-scale = Vector2(0.0937274, 0.322894)
+[node name="Floor6" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(321, 335)
+scale = Vector2(0.0870458, 0.354152)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor4"]
-shape = SubResource("RectangleShape2D_km1yn")
+[node name="Floor7" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(575, 209)
+scale = Vector2(0.0870458, 0.354152)
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor4/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
+[node name="Floor17" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(749, 214)
+scale = Vector2(0.0870458, 0.354152)
 
-[node name="Floor5" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(79.0001, 518)
-scale = Vector2(0.0937274, 0.322894)
+[node name="Floor8" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1105, 359)
+scale = Vector2(0.0870458, 0.354152)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor5"]
-shape = SubResource("RectangleShape2D_km1yn")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor5/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
-
-[node name="Floor6" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(174, 380)
-scale = Vector2(0.0937274, 0.322894)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor6"]
-shape = SubResource("RectangleShape2D_km1yn")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor6/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
-
-[node name="Floor7" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(136, 244)
-scale = Vector2(0.395214, 0.340538)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor7"]
-shape = SubResource("RectangleShape2D_km1yn")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor7/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
-
-[node name="Floor8" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(324, 144)
-scale = Vector2(0.395214, 0.340538)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor8"]
-shape = SubResource("RectangleShape2D_km1yn")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor8/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
-
-[node name="Floor10" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(851, 486)
-scale = Vector2(0.395214, 0.340538)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor10"]
-shape = SubResource("RectangleShape2D_km1yn")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor10/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
-
-[node name="Floor11" type="StaticBody2D" parent="Node2D/Env"]
-position = Vector2(1039, 386)
-scale = Vector2(0.395214, 0.340538)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor11"]
-shape = SubResource("RectangleShape2D_km1yn")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor11/CollisionShape2D"]
-texture = SubResource("NoiseTexture2D_eu8jo")
+[node name="Floor9" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(37, 533)
+scale = Vector2(0.0870458, 0.354152)
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]
