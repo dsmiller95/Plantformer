@@ -6,7 +6,8 @@ using Character;
 public record WalkingState(
   CharacterOptions Options,
   IStateDefinition IdleState,
-  IStateDefinition JumpingState): IState {
+  IStateDefinition JumpingState,
+  IStateDefinition UnGroundedState): IState {
 
   public IStateDefinition? Tick(CharacterContext context) {
     if(Math.Abs(context.Input.MoveAxis) < Options.DeadZone) {
@@ -15,6 +16,10 @@ public record WalkingState(
 
     if(context.Input.JumpPressed) {
       return JumpingState;
+    }
+
+    if (!context.Physics.IsGrounded) {
+      return UnGroundedState;
     }
 
     context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
