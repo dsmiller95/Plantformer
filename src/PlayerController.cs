@@ -62,8 +62,8 @@ public partial class PlayerController : CharacterBody2D {
   }
 
   private sealed class GodotInput : IInput {
-    public bool JumpPressed => Input.IsActionJustPressed("jump");
-    public bool AttackPressed => Input.IsActionJustPressed("attack");
+    public bool JumpPressed => Input.IsActionPressed("jump");
+    public bool AttackPressed => Input.IsActionPressed("attack");
     public float MoveAxis => Input.GetAxis("move_left", "move_right");
     public bool CrouchPressed => Input.IsActionPressed("crouch");
   }

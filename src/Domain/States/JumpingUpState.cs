@@ -1,5 +1,6 @@
 ﻿namespace Plantformer.Domain.States;
 
+using System;
 using Character;
 using StateInterfaces;
 
@@ -28,5 +29,6 @@ public record JumpingUpState(
   }
 
   public void Exit(CharacterContext context) {
+    context.Physics.SetVertical(Math.Min(0, context.Physics.VerticalVelocity));
   }
 }
