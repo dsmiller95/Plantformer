@@ -67,114 +67,117 @@ position = Vector2(0.500009, 0.250011)
 scale = Vector2(1.5, 2.65)
 texture = SubResource("NoiseTexture2D_7omc5")
 
-[node name="Floor" type="StaticBody2D" parent="Node2D"]
-position = Vector2(303, 680)
+[node name="Env" type="Node2D" parent="Node2D"]
+position = Vector2(0, -1)
+
+[node name="Floor" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(303, 681)
 scale = Vector2(0.499432, 0.337541)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor9" type="StaticBody2D" parent="Node2D"]
-position = Vector2(120, 763)
+[node name="Floor9" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(120, 764)
 scale = Vector2(12.0388, 0.34114)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor9"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor9"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor9/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor9/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor2" type="StaticBody2D" parent="Node2D"]
-position = Vector2(592, 623)
+[node name="Floor2" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(592, 624)
 scale = Vector2(0.499432, 0.337541)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor2"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor2/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor2/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor3" type="StaticBody2D" parent="Node2D"]
-position = Vector2(504, 391)
+[node name="Floor3" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(504, 392)
 scale = Vector2(0.0937274, 0.322894)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor3"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor3/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor3/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor4" type="StaticBody2D" parent="Node2D"]
-position = Vector2(602, 316)
+[node name="Floor4" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(602, 317)
 scale = Vector2(0.0937274, 0.322894)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor4"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor4/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor4/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor5" type="StaticBody2D" parent="Node2D"]
-position = Vector2(79.0001, 517)
+[node name="Floor5" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(79.0001, 518)
 scale = Vector2(0.0937274, 0.322894)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor5"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor5"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor5/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor5/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor6" type="StaticBody2D" parent="Node2D"]
-position = Vector2(174, 379)
+[node name="Floor6" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(174, 380)
 scale = Vector2(0.0937274, 0.322894)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor6"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor6"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor6/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor6/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor7" type="StaticBody2D" parent="Node2D"]
-position = Vector2(136, 243)
+[node name="Floor7" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(136, 244)
 scale = Vector2(0.395214, 0.340538)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor7"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor7"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor7/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor7/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor8" type="StaticBody2D" parent="Node2D"]
-position = Vector2(324, 143)
+[node name="Floor8" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(324, 144)
 scale = Vector2(0.395214, 0.340538)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Floor8"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor8"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Floor8/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor8/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor7" type="StaticBody2D" parent="."]
-position = Vector2(933, 417)
+[node name="Floor10" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(851, 486)
 scale = Vector2(0.395214, 0.340538)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor7"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor10"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Floor7/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor10/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
-[node name="Floor8" type="StaticBody2D" parent="."]
-position = Vector2(1121, 317)
+[node name="Floor11" type="StaticBody2D" parent="Node2D/Env"]
+position = Vector2(1039, 386)
 scale = Vector2(0.395214, 0.340538)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor8"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Env/Floor11"]
 shape = SubResource("RectangleShape2D_km1yn")
 
-[node name="Sprite2D" type="Sprite2D" parent="Floor8/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Env/Floor11/CollisionShape2D"]
 texture = SubResource("NoiseTexture2D_eu8jo")
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]
