@@ -13,17 +13,19 @@ namespace Plantformer;
 
 using Chickensoft.Log;
 using Domain;
+using Domain.Character;
+using Domain.States;
 
 public partial class PlayerController : CharacterBody2D {
   // ---- Tunables ----------------------------------------------------------
   private const float WalkSpeed = 130f;
-  private const float JumpSpeed = -280f; // negative = up in Godot
+  private const float JumpSpeed = -480f; // negative = up in Godot
+  private const float JumpTime = 1f; // negative = up in Godot
   private const float Gravity = 800f;
   private const float CoyoteSecs = 0.18f;
   // ------------------------------------------------------------------------
 
   // Thin wrappers that satisfy the domain interfaces
-  private readonly GodotClock _clock = new();
   private readonly GodotInput _input = new();
   private GodotPhysics _physics; // needs 'this' ⇒ create in _Ready
   private StateMachine _stateMachine;
@@ -43,21 +45,25 @@ public partial class PlayerController : CharacterBody2D {
     IState jumping = null!;
 
     idle = new IdleState(
-          WalkingState: new LambdaStateDefinition(ctx => walking)
+          WalkingState: new LambdaStateDefinition(ctx => walking),
+          JumpingState: new LambdaStateDefinition(ctx => jumping)
         );
     walking = new WalkingState(
           IdleState: new LambdaStateDefinition(ctx => idle),
+          JumpingState: new LambdaStateDefinition(ctx => jumping),
           Speed: WalkSpeed
         );
     jumping = new JumpingState(
-          Speed: JumpSpeed
+          WalkingState: new LambdaStateDefinition(ctx => walking),
+          JumpTime: JumpTime,
+          JumpSpeed: JumpSpeed
         );
 
     return idle;
   }
 
   public override void _PhysicsProcess(double delta) {
-    var context = new CharacterContext(_clock, _input, _physics);
+    var context = new CharacterContext(new GodotClock(delta), _input, _physics);
     _stateMachine.Tick(context);
 
     // Add gravity and push the body
@@ -68,14 +74,15 @@ public partial class PlayerController : CharacterBody2D {
   // ────────────────────────────────────────────────────────────────────────
   //  Adapters
   // ────────────────────────────────────────────────────────────────────────
-  private sealed class GodotClock : IClock {
+  private sealed class GodotClock(double deltaTime) : IClock {
     public float Now => Time.GetTicksMsec() / 1000f;
+    public float DeltaTime => (float)deltaTime;
   }
 
   private sealed class GodotInput : IInput {
     public bool JumpPressed => Input.IsActionJustPressed("jump");
     public bool AttackPressed => Input.IsActionJustPressed("attack");
-    public float MoveAxis => Input.GetAxis("ui_left", "ui_right");
+    public float MoveAxis => Input.GetAxis("move_left", "move_right");
     public bool CrouchPressed => Input.IsActionPressed("crouch");
   }
 

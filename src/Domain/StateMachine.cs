@@ -1,29 +1,8 @@
 ﻿namespace Plantformer.Domain;
 
 using System;
+using Character;
 using Chickensoft.Log;
-
-public interface IClock {
-  public float Now { get; }
-}
-
-public interface IInput {
-  public bool JumpPressed { get; }
-  public bool AttackPressed  { get; }
-  public bool CrouchPressed { get; }
-  public float MoveAxis { get; }
-}
-
-public interface ICharacterPhysics {
-  public bool IsGrounded { get; }
-  public float VerticalVelocity { get; }
-
-  public void SetHorizontal(float vx);
-
-  public void SetVertical(float vy);
-}
-
-public record CharacterContext(IClock Clock, IInput Input, ICharacterPhysics Physics);
 
 public interface IStateDefinition {
   public IState CreateState(CharacterContext context);

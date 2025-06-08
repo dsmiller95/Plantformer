@@ -1,17 +1,23 @@
-﻿namespace Plantformer.Domain;
+﻿namespace Plantformer.Domain.States;
 
 using System;
-using Godot;
-
-
+using Character;
 
 public record IdleState(
   IStateDefinition WalkingState,
-  float DeadZone = 0.1f): IState {
+  IStateDefinition JumpingState,
+  float DeadZone = 0.1f,
+  float G = 800f): IState {
   public IStateDefinition? Tick(CharacterContext context) {
     if(Math.Abs(context.Input.MoveAxis) > DeadZone) {
       return WalkingState;
     }
+
+    if(context.Input.JumpPressed) {
+      return JumpingState;
+    }
+
+    context.ApplyGravity(G);
 
     return null;
   }
