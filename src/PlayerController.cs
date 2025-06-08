@@ -19,7 +19,7 @@ using Domain.States;
 public partial class PlayerController : CharacterBody2D {
   // ---- Tunables ----------------------------------------------------------
   private const float WalkSpeed = 130f;
-  private const float JumpSpeed = -480f; // negative = up in Godot
+  private const float JumpSpeed = -780f; // negative = up in Godot
   private const float JumpTime = 1f; // negative = up in Godot
   private const float Gravity = 800f;
   private const float CoyoteSecs = 0.18f;
@@ -39,7 +39,8 @@ public partial class PlayerController : CharacterBody2D {
       JumpSpeed = JumpSpeed,
       Gravity = Gravity,
       DeadZone = 0.1f,
-      JumpTime = JumpTime
+      JumpTime = JumpTime,
+      JumpGravity = Gravity * 0.5f,
     };
 
     var entryState = BuildStateGraph(options);

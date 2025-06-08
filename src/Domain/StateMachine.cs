@@ -11,7 +11,6 @@ public interface IStateDefinition {
 public class LambdaStateDefinition(Func<CharacterContext, IState> creator) : IStateDefinition {
   public IState CreateState(CharacterContext context) => creator(context);
 
-  // implicit conversion from labmda
   public static implicit operator LambdaStateDefinition(Func<CharacterContext, IState> creator) => new(creator);
 }
 
