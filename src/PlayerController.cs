@@ -22,6 +22,7 @@ public partial class PlayerController : CharacterBody2D {
   private const float JumpSpeed = 900f;
   private const float JumpTime = 1f;
   private const float Gravity = -3000f;
+  private const float JumpGravity = -2000f;
   private const float CoyoteSecs = 0.18f;
   // ------------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ public partial class PlayerController : CharacterBody2D {
       Gravity = Gravity,
       DeadZone = 0.1f,
       JumpTime = JumpTime,
-      JumpGravity = Gravity * 0.7f,
+      JumpGravity = JumpGravity,
     };
 
     var entryState = BuildStateGraph(options);
