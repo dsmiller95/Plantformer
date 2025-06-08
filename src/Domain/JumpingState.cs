@@ -4,26 +4,25 @@ using System;
 using Chickensoft.Log;
 using Godot;
 
-public record JumpingState : IState {
+public record JumpingState(float Speed = 50f) : IState {
 
-  private float _jumpStartTime;
+  private Mut? _m;
 
-  public JumpingState(CharacterContext context, float Speed = 50f) {
-    this.Speed = Speed;
-    _jumpStartTime = context.Clock.Now;
+  private record Mut(float JumpStartTime) {
+
   }
 
-  public IState Tick(CharacterContext context) {
-
-    context.Physics.SetHorizontal(context.Input.MoveAxis * Speed);
+  public IStateDefinition? Tick(CharacterContext context) {
     context.Physics.SetHorizontal(context.Input.MoveAxis * Speed);
 
-    return this;
+    return null;
   }
 
-  public float Speed { get; init; }
+  public void Enter(CharacterContext context) {
+    _m = new Mut(context.Clock.Now);
+  }
 
-  public void Deconstruct(out float Speed) {
-    Speed = this.Speed;
+  public void Exit(CharacterContext context) {
+    _m = null;
   }
 }

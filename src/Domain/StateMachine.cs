@@ -1,5 +1,7 @@
 ﻿namespace Plantformer.Domain;
 
+using System;
+using Chickensoft.Log;
 
 public interface IClock {
   public float Now { get; }
@@ -23,20 +25,38 @@ public interface ICharacterPhysics {
 
 public record CharacterContext(IClock Clock, IInput Input, ICharacterPhysics Physics);
 
-public interface IState {
-  public IState Tick(CharacterContext context);
+public interface IStateDefinition {
+  public IState CreateState(CharacterContext context);
 }
 
-public record StateMachine(IState State) {
+public class LambdaStateDefinition(Func<CharacterContext, IState> creator) : IStateDefinition {
+  public IState CreateState(CharacterContext context) => creator(context);
 
-  public StateMachine Tick(CharacterContext context) {
-    var nextState = State.Tick(context);
-    if(nextState == State) {
-      return this;
+  // implicit conversion from labmda
+  public static implicit operator LambdaStateDefinition(Func<CharacterContext, IState> creator) => new(creator);
+}
+
+public interface IState {
+  public void Enter(CharacterContext context) { }
+  public IStateDefinition? Tick(CharacterContext context);
+  public void Exit(CharacterContext context) { }
+}
+
+public class StateMachine(IState state) {
+  private IState _state = state;
+  private readonly Log _log = new(nameof(StateMachine), new ConsoleWriter(), new TraceWriter());
+
+  public void Tick(CharacterContext context) {
+    var transition = _state.Tick(context);
+    if (transition == null) {
+      return;
     }
+    var nextState = transition.CreateState(context);
 
-    return new StateMachine(nextState);
+    _log.Print($"Transitioning from {_state.GetType().Name} to {nextState.GetType().Name}");
+
+    _state.Exit(context);
+    nextState.Enter(context);
+    _state = nextState;
   }
-
-
 }
