@@ -4,7 +4,7 @@ using Character;
 using StateInterfaces;
 
 public class StateGraph {
-  
+
   public static StateMachine Build(CharacterOptions options) {
     IState idle = null!;
     IState walking = null!;
@@ -26,7 +26,8 @@ public class StateGraph {
       FallingState: new LambdaStateDefinition(ctx => falling)
     );
     falling = new FallingState(options,
-      GroundedState: new LambdaStateDefinition(ctx => walking)
+      GroundedState: new LambdaStateDefinition(ctx => walking),
+      JumpedState: new LambdaStateDefinition(ctx => jumping)
     );
 
     return new StateMachine(idle);

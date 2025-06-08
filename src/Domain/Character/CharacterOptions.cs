@@ -7,4 +7,5 @@ public record CharacterOptions {
   public required float JumpTime { get; init; }
   public required float JumpSpeed { get; init; }
   public required float JumpGravity { get; init; }
+  public required float CoyoteTime { get; init; }
 }

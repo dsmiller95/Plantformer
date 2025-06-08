@@ -40,6 +40,7 @@ public partial class PlayerController : CharacterBody2D {
       DeadZone = 0.1f,
       JumpTime = JumpTime,
       JumpGravity = JumpGravity,
+      CoyoteTime = CoyoteSecs,
     };
 
     _stateMachine = StateGraph.Build(options);
@@ -49,8 +50,6 @@ public partial class PlayerController : CharacterBody2D {
     var context = new CharacterContext(new GodotClock(delta), _input, _physics);
     _stateMachine.Tick(context);
 
-    // Add gravity and push the body
-    // Velocity = Velocity with { Y = Velocity.Y + Gravity * (float)delta };
     MoveAndSlide();
   }
 
