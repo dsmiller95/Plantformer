@@ -25,6 +25,13 @@ public class TransitioningState(IStateDefinition to, Func<CharacterContext, bool
   public void Exit(CharacterContext context) => wrapped.Exit(context);
 }
 
+public class NullState: IState {
+  public void Enter(CharacterContext context) { }
+  public IStateDefinition? Transition(CharacterContext context) => null;
+  public void Tick(CharacterContext context) { }
+  public void Exit(CharacterContext context) { }
+}
+
 public static class IStateExtensions {
   public static IState TransitionsTo(this IState wrapped, IStateDefinition otherState, Func<CharacterContext, bool> when) =>
     new TransitioningState(otherState, when, wrapped);

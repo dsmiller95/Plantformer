@@ -9,13 +9,17 @@ public record FallingState(
   IStateDefinition JumpedState) : IState {
 
   private float _startedFallingTime;
+  private bool CanJump { get; set; } = true;
+  public FallingState CantJump() => this with { CanJump = false };
 
   public IStateDefinition? Transition(CharacterContext context) {
     if(context.Physics.IsGrounded) {
       return GroundedState;
     }
 
-    if(context.Input.JumpPressed && context.Clock.TimeSince(_startedFallingTime) < Options.CoyoteTime) {
+    if(this.CanJump &&
+       context.Input.JumpPressed &&
+       context.Clock.TimeSince(_startedFallingTime) < Options.CoyoteTime) {
       return JumpedState;
     }
 

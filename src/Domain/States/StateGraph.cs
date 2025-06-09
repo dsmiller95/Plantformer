@@ -6,30 +6,30 @@ using StateInterfaces;
 public class StateGraph {
 
   public static StateMachine Build(CharacterOptions options) {
-    IState idle = null!;
-    IState walking = null!;
-    IState jumping = null!;
-    IState falling = null!;
+    var idle = new SwappableStateDefinition();
+    var walking = new SwappableStateDefinition();
+    var jumping = new SwappableStateDefinition();
+    var falling = new SwappableStateDefinition();
 
-    idle = new IdleState(options,
-      WalkingState: new LambdaStateDefinition(ctx => walking),
-      JumpingState: new LambdaStateDefinition(ctx => jumping),
-      UnGroundedState: new LambdaStateDefinition(ctx => falling)
+    idle.State = new IdleState(options,
+      WalkingState: walking,
+      JumpingState: jumping,
+      UnGroundedState: falling
     );
-    walking = new WalkingState(options,
-      IdleState: new LambdaStateDefinition(ctx => idle),
-      JumpingState: new LambdaStateDefinition(ctx => jumping),
-      UnGroundedState: new LambdaStateDefinition(ctx => falling)
+    walking.State = new WalkingState(options,
+      IdleState: idle,
+      JumpingState: jumping,
+      UnGroundedState: falling
     );
-    jumping = new JumpingUpState(options,
-      GroundedState: new LambdaStateDefinition(ctx => walking),
-      FallingState: new LambdaStateDefinition(ctx => falling)
+    jumping.State = new JumpingUpState(options,
+      GroundedState: walking,
+      FallingState: falling
     );
-    falling = new FallingState(options,
-      GroundedState: new LambdaStateDefinition(ctx => walking),
-      JumpedState: new LambdaStateDefinition(ctx => jumping)
+    falling.State = new FallingState(options,
+      GroundedState: walking,
+      JumpedState: jumping
     );
 
-    return new StateMachine(idle);
+    return new StateMachine(idle.State);
   }
 }
