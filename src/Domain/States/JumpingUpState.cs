@@ -8,20 +8,17 @@ public record JumpingUpState(
   CharacterOptions Options,
   IStateDefinition GroundedState,
   IStateDefinition FallingState) : IState {
-
-  public IStateDefinition? Tick(CharacterContext context) {
-    if(context.Physics.IsGrounded) {
-      return GroundedState;
-    }
-
+  public IStateDefinition? Transition(CharacterContext context) {
     if (!context.Input.JumpPressed || context.Physics.VerticalVelocity < 0) {
       return FallingState;
     }
 
+    return null;
+  }
+
+  public void Tick(CharacterContext context) {
     context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
     context.ApplyGravity(Options.JumpGravity);
-
-    return null;
   }
 
   public void Enter(CharacterContext context) {

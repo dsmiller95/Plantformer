@@ -10,7 +10,7 @@ public record WalkingState(
   IStateDefinition JumpingState,
   IStateDefinition UnGroundedState): IState {
 
-  public IStateDefinition? Tick(CharacterContext context) {
+  public IStateDefinition? Transition(CharacterContext context) {
     if(Math.Abs(context.Input.MoveAxis) < Options.DeadZone) {
       return IdleState;
     }
@@ -23,9 +23,11 @@ public record WalkingState(
       return UnGroundedState;
     }
 
+    return null;
+  }
+  
+  public void Tick(CharacterContext context) {
     context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
     context.ApplyGravity(Options.Gravity);
-
-    return null;
   }
 }

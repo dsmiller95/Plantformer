@@ -10,7 +10,7 @@ public record FallingState(
 
   private float _startedFallingTime;
 
-  public IStateDefinition? Tick(CharacterContext context) {
+  public IStateDefinition? Transition(CharacterContext context) {
     if(context.Physics.IsGrounded) {
       return GroundedState;
     }
@@ -19,10 +19,12 @@ public record FallingState(
       return JumpedState;
     }
 
+    return null;
+  }
+
+  public void Tick(CharacterContext context) {
     context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
     context.ApplyGravity(Options.Gravity);
-
-    return null;
   }
 
   public void Enter(CharacterContext context) {

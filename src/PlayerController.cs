@@ -15,21 +15,17 @@ using Domain.StateInterfaces;
 using Domain.States;
 
 public partial class PlayerController : CharacterBody2D {
-  // ---- Tunables ----------------------------------------------------------
   private const float WalkSpeed = 400f;
   private const float JumpSpeed = 900f;
   private const float JumpTime = 1f;
   private const float Gravity = -3000f;
   private const float JumpGravity = -2000f;
   private const float CoyoteSecs = 0.18f;
-  // ------------------------------------------------------------------------
 
-  // Thin wrappers that satisfy the domain interfaces
   private readonly GodotInput _input = new();
-  private GodotPhysics _physics; // needs 'this' ⇒ create in _Ready
+  private GodotPhysics _physics;
   private StateMachine _stateMachine;
 
-  // ------------------------------------------------------------------------
   public override void _Ready() {
     _physics = new GodotPhysics(this);
 
@@ -53,9 +49,6 @@ public partial class PlayerController : CharacterBody2D {
     MoveAndSlide();
   }
 
-  // ────────────────────────────────────────────────────────────────────────
-  //  Adapters
-  // ────────────────────────────────────────────────────────────────────────
   private sealed class GodotClock(double deltaTime) : IClock {
     public float Now => Time.GetTicksMsec() / 1000f;
     public float DeltaTime => (float)deltaTime;
