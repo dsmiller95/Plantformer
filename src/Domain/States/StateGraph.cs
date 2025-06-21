@@ -10,12 +10,13 @@ public class StateGraph {
   private int _nextId = 1;
   private readonly Dictionary<StateId, IState> _states = new();
 
-  private readonly record struct StateId {
+  private record StateId {
     public required int Id { get; init; }
   }
+  private record StateId<T> : StateId where T: IState { };
 
-  private StateId TakeId() {
-    var id = new StateId { Id = _nextId };
+  private StateId<T> TakeId<T>() where T: IState {
+    var id = new StateId<T> { Id = _nextId };
     _nextId++;
     return id;
   }
@@ -25,7 +26,16 @@ public class StateGraph {
   }
 
   private IStateDefinition To(StateId id) => new IdStateDefinition(id, this);
-  private T Define<T>(StateId id, T state) where T: IState {
+  private IStateDefinition To<T>(StateId<T> id) where T: IState {
+    return new IdStateDefinition(id, this);
+  }
+  private IStateDefinition To<TFrom, TTo>(StateId<TFrom> id, Func<TFrom, TTo> transformState)
+    where TFrom: class, IState
+    where TTo: IState {
+    return new LambdaStateDefinition(ctx => transformState(Get(id)));
+  }
+
+  private T Define<T>(StateId<T> id, T state) where T: IState {
     if (!_states.TryAdd(id, state)) {
       throw new InvalidOperationException($"State with id {id.Id} already exists in the state graph.");
     }
@@ -34,12 +44,13 @@ public class StateGraph {
   }
 
   private IState Get(StateId id) => _states[id];
+  private T Get<T>(StateId<T> id) where T: class, IState => _states[id] as T ?? throw new InvalidOperationException($"State with id {id.Id} is not of type {typeof(T).Name}.");
 
   private StateMachine BuildSelf(CharacterOptions options) {
-    var idleId = TakeId();
-    var walkingId = TakeId();
-    var jumpingId = TakeId();
-    var fallingId = TakeId();
+    var idleId = TakeId<IdleState>();
+    var walkingId = TakeId<WalkingState>();
+    var jumpingId = TakeId<JumpingUpState>();
+    var fallingId = TakeId<FallingState>();
 
     var idle = Define(idleId, new IdleState(options,
       WalkingState: To(walkingId),
@@ -54,8 +65,7 @@ public class StateGraph {
     ));
 
     var jumping = Define(jumpingId, new JumpingUpState(options,
-      GroundedState: To(walkingId),
-      FallingState: To(fallingId)
+      FallingState: To(fallingId, x => x.CantJump())
     ));
 
     var falling = Define(fallingId, new FallingState(options,

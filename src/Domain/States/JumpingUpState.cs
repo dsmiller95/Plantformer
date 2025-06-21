@@ -6,7 +6,6 @@ using StateInterfaces;
 
 public record JumpingUpState(
   CharacterOptions Options,
-  IStateDefinition GroundedState,
   IStateDefinition FallingState) : IState {
   public IStateDefinition? Transition(CharacterContext context) {
     if (!context.Input.JumpPressed || context.Physics.VerticalVelocity < 0) {
