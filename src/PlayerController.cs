@@ -11,6 +11,7 @@ using Godot;
 namespace Plantformer;
 
 using Domain.Character;
+using Domain.FunctionalMachine;
 using Domain.StateInterfaces;
 using Domain.States;
 
@@ -25,6 +26,7 @@ public partial class PlayerController : CharacterBody2D {
   private readonly GodotInput _input = new();
   private GodotPhysics _physics;
   private StateMachine _stateMachine;
+  private StateTicker _stateTicker;
 
   public override void _Ready() {
     _physics = new GodotPhysics(this);
@@ -40,11 +42,13 @@ public partial class PlayerController : CharacterBody2D {
     };
 
     _stateMachine = StateGraph.Build(options);
+    _stateTicker = new StateTicker(options);
   }
 
   public override void _PhysicsProcess(double delta) {
     var context = new CharacterContext(new GodotClock(delta), _input, _physics);
-    _stateMachine.Tick(context);
+    // _stateMachine.Tick(context);
+    _stateTicker.Tick(context);
 
     MoveAndSlide();
   }
