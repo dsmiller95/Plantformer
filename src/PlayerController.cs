@@ -39,6 +39,7 @@ public partial class PlayerController : CharacterBody2D {
       JumpTime = JumpTime,
       JumpGravity = JumpGravity,
       CoyoteTime = CoyoteSecs,
+      AirJumps = 1f, // double jump
     };
 
     _stateMachine = StateGraph.Build(options);

@@ -7,7 +7,7 @@ using Chickensoft.Log;
 public class StateTicker(CharacterOptions options) {
 
   private State _state = State.Idle;
-  private float _startedFallingTime = -1;
+  private float _lastGroundedTime = -1;
   private readonly Log _log = new(nameof(StateTicker), new ConsoleWriter());
   private int _jumpsSinceGrounded = 0;
 
@@ -95,10 +95,13 @@ public class StateTicker(CharacterOptions options) {
           return State.Idle;
         }
 
-        if(_jumpsSinceGrounded <= 0 &&
-           ctx.Input.JumpPressed &&
-           ctx.Clock.TimeSince(_startedFallingTime) < options.CoyoteTime) {
-          return State.JumpingUp;
+        if (ctx.Input.JumpPressed) {
+          if (ctx.Clock.TimeSince(_lastGroundedTime) < options.CoyoteTime) {
+            return State.JumpingUp;
+          }
+          if(_jumpsSinceGrounded <= options.AirJumps) {
+            return State.JumpingUp;
+          }
         }
         break;
     }
@@ -110,11 +113,9 @@ public class StateTicker(CharacterOptions options) {
     switch(state) {
       case State.Idle:
         ctx.Physics.SetHorizontal(0);
-        _jumpsSinceGrounded = 0;
         break;
 
       case State.Walking:
-        _jumpsSinceGrounded = 0;
         break;
 
       case State.JumpingUp:
@@ -123,19 +124,27 @@ public class StateTicker(CharacterOptions options) {
         break;
 
       case State.Falling:
-        _startedFallingTime = ctx.Clock.Now;
         break;
     }
   }
 
-  private void Exit(State state, CharacterContext xtc) {
+  private void Exit(State state, CharacterContext ctx) {
     switch(state) {
+      case State.Idle:
+        _lastGroundedTime = ctx.Clock.Now;
+        _jumpsSinceGrounded = 0;
+        break;
+
+      case State.Walking:
+        _lastGroundedTime = ctx.Clock.Now;
+        _jumpsSinceGrounded = 0;
+        break;
+
       case State.JumpingUp:
-        xtc.Physics.SetVertical(Math.Min(0, xtc.Physics.VerticalVelocity));
+        ctx.Physics.SetVertical(Math.Min(0, ctx.Physics.VerticalVelocity));
         break;
 
       case State.Falling:
-        _startedFallingTime = -1;
         break;
     }
   }
