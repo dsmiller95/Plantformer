@@ -7,9 +7,9 @@ using Chickensoft.Log;
 public class StateTicker(CharacterOptions options) {
 
   private State _state = State.Idle;
-  private bool _canJump = true;
   private float _startedFallingTime = -1;
   private readonly Log _log = new(nameof(StateTicker), new ConsoleWriter());
+  private int _jumpsSinceGrounded = 0;
 
   public void Tick(CharacterContext ctx) {
     var firstState = _state;
@@ -95,7 +95,7 @@ public class StateTicker(CharacterOptions options) {
           return State.Idle;
         }
 
-        if(_canJump &&
+        if(_jumpsSinceGrounded <= 0 &&
            ctx.Input.JumpPressed &&
            ctx.Clock.TimeSince(_startedFallingTime) < options.CoyoteTime) {
           return State.JumpingUp;
@@ -110,10 +110,16 @@ public class StateTicker(CharacterOptions options) {
     switch(state) {
       case State.Idle:
         ctx.Physics.SetHorizontal(0);
+        _jumpsSinceGrounded = 0;
+        break;
+
+      case State.Walking:
+        _jumpsSinceGrounded = 0;
         break;
 
       case State.JumpingUp:
         ctx.Physics.SetVertical(options.JumpSpeed);
+        _jumpsSinceGrounded += 1;
         break;
 
       case State.Falling:
