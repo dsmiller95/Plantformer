@@ -8,7 +8,7 @@ public record JumpingUpState(
   CharacterOptions Options,
   IStateDefinition FallingState) : IState {
   public IStateDefinition? Transition(CharacterContext context) {
-    if (!context.Input.JumpPressed || context.Physics.VerticalVelocity < 0) {
+    if (!context.Input.Jump.Down || context.Physics.VerticalVelocity < 0) {
       return FallingState;
     }
 

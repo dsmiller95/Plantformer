@@ -63,7 +63,7 @@ public class StateTicker(CharacterOptions options) {
         if(Math.Abs(ctx.Input.MoveAxis) > options.DeadZone) {
           return State.Walking;
         }
-        if(ctx.Input.JumpPressed) {
+        if(ctx.Input.Jump.Pressed) {
           return State.JumpingUp;
         }
         if (!ctx.Physics.IsGrounded) {
@@ -75,7 +75,7 @@ public class StateTicker(CharacterOptions options) {
         if(Math.Abs(ctx.Input.MoveAxis) < options.DeadZone) {
           return State.Idle;
         }
-        if(ctx.Input.JumpPressed) {
+        if(ctx.Input.Jump.Pressed) {
           return State.JumpingUp;
         }
         if (!ctx.Physics.IsGrounded) {
@@ -84,7 +84,7 @@ public class StateTicker(CharacterOptions options) {
         break;
 
       case State.JumpingUp:
-        if (!ctx.Input.JumpPressed || ctx.Physics.VerticalVelocity < 0) {
+        if (!ctx.Input.Jump.Down || ctx.Physics.VerticalVelocity < 0) {
           return State.Falling;
         }
 
@@ -95,7 +95,7 @@ public class StateTicker(CharacterOptions options) {
           return State.Idle;
         }
 
-        if (ctx.Input.JumpPressed) {
+        if (ctx.Input.Jump.Pressed) {
           if (ctx.Clock.TimeSince(_lastGroundedTime) < options.CoyoteTime) {
             return State.JumpingUp;
           }

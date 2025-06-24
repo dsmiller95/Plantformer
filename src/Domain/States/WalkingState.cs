@@ -15,7 +15,7 @@ public record WalkingState(
       return IdleState;
     }
 
-    if(context.Input.JumpPressed) {
+    if(context.Input.Jump.Down) {
       return JumpingState;
     }
 
@@ -25,7 +25,7 @@ public record WalkingState(
 
     return null;
   }
-  
+
   public void Tick(CharacterContext context) {
     context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
     context.ApplyGravity(Options.Gravity);

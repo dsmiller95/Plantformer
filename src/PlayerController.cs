@@ -60,10 +60,26 @@ public partial class PlayerController : CharacterBody2D {
   }
 
   private sealed class GodotInput : IInput {
-    public bool JumpPressed => Input.IsActionPressed("jump");
-    public bool AttackPressed => Input.IsActionPressed("attack");
+    public PressedState Jump => GetPressedState("jump");
+    public PressedState Attack => GetPressedState("attack");
     public float MoveAxis => Input.GetAxis("move_left", "move_right");
-    public bool CrouchPressed => Input.IsActionPressed("crouch");
+    public PressedState Crouch => GetPressedState("crouch");
+
+    private PressedState GetPressedState(string action) {
+      if (Input.IsActionJustPressed(action)) {
+        return new PressedState(false, true);
+      }
+
+      if (Input.IsActionJustReleased(action)) {
+        return new PressedState(true, false);
+      }
+
+      if (Input.IsActionPressed(action)) {
+        return new PressedState(true, true);
+      }
+
+      return new PressedState(false, false);
+    }
   }
 
   private sealed class GodotPhysics(CharacterBody2D body) : ICharacterPhysics {

@@ -15,7 +15,7 @@ public record IdleState(
       return WalkingState;
     }
 
-    if(context.Input.JumpPressed) {
+    if(context.Input.Jump.Down) {
       return JumpingState;
     }
 

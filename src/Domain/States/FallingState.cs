@@ -18,7 +18,7 @@ public record FallingState(
     }
 
     if(this.CanJump &&
-       context.Input.JumpPressed &&
+       context.Input.Jump.Down &&
        context.Clock.TimeSince(_startedFallingTime) < Options.CoyoteTime) {
       return JumpedState;
     }
