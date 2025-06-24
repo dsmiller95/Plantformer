@@ -16,13 +16,6 @@ using Domain.StateInterfaces;
 using Domain.States;
 
 public partial class PlayerController : CharacterBody2D {
-  private const float WalkSpeed = 400f;
-  private const float JumpSpeed = 900f;
-  private const float JumpTime = 1f;
-  private const float Gravity = -3000f;
-  private const float JumpGravity = -2000f;
-  private const float CoyoteSecs = 0.18f;
-
   private readonly GodotInput _input = new();
   private GodotPhysics _physics;
   private StateMachine _stateMachine;
@@ -32,13 +25,14 @@ public partial class PlayerController : CharacterBody2D {
     _physics = new GodotPhysics(this);
 
     var options = new CharacterOptions {
-      MoveSpeed = WalkSpeed,
-      JumpSpeed = JumpSpeed,
-      Gravity = Gravity,
+      MoveSpeed = 400f,
+      JumpSpeed = 900f,
+      Gravity = -3000f,
       DeadZone = 0.1f,
-      JumpTime = JumpTime,
-      JumpGravity = JumpGravity,
-      CoyoteTime = CoyoteSecs,
+      JumpTime = 1f,
+      JumpGravity = -2000,
+      JumpArrestGravity = -5000,
+      CoyoteTime = 0.18f,
       AirJumps = 1f, // double jump
     };
 

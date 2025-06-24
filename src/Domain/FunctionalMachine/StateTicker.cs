@@ -46,7 +46,12 @@ public class StateTicker(CharacterOptions options) {
         break;
       case State.JumpingUp:
         ctx.Physics.SetHorizontal(ctx.Input.MoveAxis * options.MoveSpeed);
-        ctx.ApplyGravity(options.JumpGravity);
+        if (ctx.Input.Jump.Down) {
+          ctx.ApplyGravity(options.JumpGravity);
+        }
+        else {
+          ctx.ApplyGravity(options.JumpArrestGravity);
+        }
         break;
       case State.Falling:
         ctx.Physics.SetHorizontal(ctx.Input.MoveAxis * options.MoveSpeed);
@@ -84,7 +89,7 @@ public class StateTicker(CharacterOptions options) {
         break;
 
       case State.JumpingUp:
-        if (!ctx.Input.Jump.Down || ctx.Physics.VerticalVelocity < 0) {
+        if (ctx.Physics.VerticalVelocity < 0) {
           return State.Falling;
         }
 
