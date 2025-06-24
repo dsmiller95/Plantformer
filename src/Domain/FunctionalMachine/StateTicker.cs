@@ -13,11 +13,12 @@ public class StateTicker(CharacterOptions options) {
   private int _jumpsSinceGrounded = 0;
 
 
-  public DebugInfo CurrentDebugInfo() => _state switch {
+  public DebugInfo CurrentDebugInfo(CharacterContext ctx) => _state switch {
     State.Idle => new DebugInfo(Colors.Black, "Idle"),
     State.Walking => new DebugInfo(Colors.Yellow, "Walking"),
     State.JumpingUp => new DebugInfo(Colors.Blue, "Jumping Up"),
-    State.Falling => new DebugInfo(Colors.Red, "Falling"),
+    State.Falling when !IsCoyoteFalling(ctx) => new DebugInfo(Colors.Red, "Falling"),
+    State.Falling when IsCoyoteFalling(ctx) => new DebugInfo(Colors.Purple, "Coyote"),
     _ => throw new ArgumentOutOfRangeException(nameof(_state), _state, null)
   };
 
@@ -111,7 +112,7 @@ public class StateTicker(CharacterOptions options) {
         }
 
         if (ctx.Input.Jump.Pressed) {
-          if (ctx.Clock.TimeSince(_lastGroundedTime) < options.CoyoteTime) {
+          if (IsCoyoteFalling(ctx)) {
             return State.JumpingUp;
           }
           if(_jumpsSinceGrounded <= options.AirJumps) {
@@ -162,6 +163,14 @@ public class StateTicker(CharacterOptions options) {
       case State.Falling:
         break;
     }
+  }
+
+  private bool IsCoyoteFalling(CharacterContext ctx) {
+    if (ctx.Clock.TimeSince(_lastGroundedTime) < options.CoyoteTime) {
+      return true;
+    }
+
+    return false;
   }
 
   private enum State {

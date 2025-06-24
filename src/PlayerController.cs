@@ -48,7 +48,7 @@ public partial class PlayerController : CharacterBody2D {
     var context = new CharacterContext(new GodotClock(delta), _input, _physics);
     // _stateMachine.Tick(context);
     _stateTicker.Tick(context);
-    DebugDrawer?.AppendDraw(_stateTicker.CurrentDebugInfo());
+    DebugDrawer?.AppendDraw(_stateTicker.CurrentDebugInfo(context));
 
     MoveAndSlide();
   }
