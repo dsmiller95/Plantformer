@@ -16,6 +16,10 @@ using Domain.StateInterfaces;
 using Domain.States;
 
 public partial class PlayerController : CharacterBody2D {
+
+  [Export]
+  public PositionalDebugDrawer? DebugDrawer;
+
   private readonly GodotInput _input = new();
   private GodotPhysics _physics;
   private StateMachine _stateMachine;
@@ -44,6 +48,7 @@ public partial class PlayerController : CharacterBody2D {
     var context = new CharacterContext(new GodotClock(delta), _input, _physics);
     // _stateMachine.Tick(context);
     _stateTicker.Tick(context);
+    DebugDrawer?.AppendDraw(_stateTicker.CurrentDebugInfo());
 
     MoveAndSlide();
   }

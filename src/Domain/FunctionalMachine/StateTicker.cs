@@ -3,6 +3,7 @@
 using System;
 using Character;
 using Chickensoft.Log;
+using Godot;
 
 public class StateTicker(CharacterOptions options) {
 
@@ -10,6 +11,15 @@ public class StateTicker(CharacterOptions options) {
   private float _lastGroundedTime = -1;
   private readonly Log _log = new(nameof(StateTicker), new ConsoleWriter());
   private int _jumpsSinceGrounded = 0;
+
+
+  public DebugInfo CurrentDebugInfo() => _state switch {
+    State.Idle => new DebugInfo(Colors.Black, "Idle"),
+    State.Walking => new DebugInfo(Colors.Yellow, "Walking"),
+    State.JumpingUp => new DebugInfo(Colors.Blue, "Jumping Up"),
+    State.Falling => new DebugInfo(Colors.Red, "Falling"),
+    _ => throw new ArgumentOutOfRangeException(nameof(_state), _state, null)
+  };
 
   public void Tick(CharacterContext ctx) {
     var firstState = _state;
@@ -154,7 +164,7 @@ public class StateTicker(CharacterOptions options) {
     }
   }
 
-  public enum State {
+  private enum State {
     Idle,
     Walking,
     JumpingUp,

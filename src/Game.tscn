@@ -1,20 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cywpu6lxdjhuu"]
+[gd_scene load_steps=4 format=3 uid="uid://cywpu6lxdjhuu"]
 
 [ext_resource type="Script" uid="uid://dlpnodv0qc0uo" path="res://src/Game.cs" id="1_17mmo"]
-[ext_resource type="Script" uid="uid://bom38vjvkhw7f" path="res://src/PlayerController.cs" id="2_kqvf5"]
+[ext_resource type="PackedScene" uid="uid://cdxwmuj7hndj" path="res://scenes/character_controller.tscn" id="2_lqjwq"]
 [ext_resource type="PackedScene" uid="uid://d3y4vq8pbq0j4" path="res://scenes/obstacles/platform.tscn" id="3_lqjwq"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqjwq"]
-
-[sub_resource type="Gradient" id="Gradient_8ec3e"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_38a0m"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7omc5"]
-width = 10
-height = 10
-color_ramp = SubResource("Gradient_8ec3e")
-noise = SubResource("FastNoiseLite_38a0m")
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -43,17 +31,8 @@ text = "Test Button"
 
 [node name="Node2D" type="Node2D" parent="."]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="Node2D"]
+[node name="CharacterBody2D" parent="Node2D" instance=ExtResource("2_lqjwq")]
 position = Vector2(405, 494)
-script = ExtResource("2_kqvf5")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/CharacterBody2D"]
-shape = SubResource("CapsuleShape2D_lqjwq")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/CharacterBody2D/CollisionShape2D"]
-position = Vector2(0.500009, 0.250011)
-scale = Vector2(1.5, 2.65)
-texture = SubResource("NoiseTexture2D_7omc5")
 
 [node name="Env" type="Node2D" parent="Node2D"]
 position = Vector2(0, -1)

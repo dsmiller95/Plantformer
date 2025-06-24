@@ -1,0 +1,34 @@
+[gd_scene load_steps=8 format=3 uid="uid://cdxwmuj7hndj"]
+
+[ext_resource type="Script" uid="uid://bom38vjvkhw7f" path="res://src/PlayerController.cs" id="1_rfsa2"]
+[ext_resource type="Script" uid="uid://c730x6ec71y4j" path="res://src/PositionalDebugDrawer.cs" id="2_wpkyv"]
+[ext_resource type="PackedScene" uid="uid://buya1tif1jmx5" path="res://scenes/debug_drawer_segment.tscn" id="3_q780c"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqjwq"]
+
+[sub_resource type="Gradient" id="Gradient_8ec3e"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_38a0m"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7omc5"]
+width = 10
+height = 10
+color_ramp = SubResource("Gradient_8ec3e")
+noise = SubResource("FastNoiseLite_38a0m")
+
+[node name="CharacterController" type="CharacterBody2D" node_paths=PackedStringArray("DebugDrawer")]
+script = ExtResource("1_rfsa2")
+DebugDrawer = NodePath("DebugDrawer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_lqjwq")
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+position = Vector2(0.500009, 0.250011)
+scale = Vector2(1.5, 2.65)
+texture = SubResource("NoiseTexture2D_7omc5")
+
+[node name="DebugDrawer" type="Node2D" parent="." node_paths=PackedStringArray("SegmentParent")]
+script = ExtResource("2_wpkyv")
+SegmentPrefab = ExtResource("3_q780c")
+SegmentParent = NodePath("..")
