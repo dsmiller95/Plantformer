@@ -26,5 +26,8 @@ public partial class PositionalDebugDrawerSegment: Node2D {
     for (var i = 0; i < _positions.Count - 1; i++) {
       DrawLine(_positions[i], _positions[i + 1], color, 2f);
     }
+
+    var debugIndex = _positions.Count / 2;
+    DrawString(ThemeDB.FallbackFont, _positions[debugIndex], Info.Description, HorizontalAlignment.Center);
   }
 }
