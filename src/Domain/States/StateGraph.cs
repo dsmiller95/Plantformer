@@ -13,7 +13,7 @@ public class StateGraph {
   private record StateId {
     public required int Id { get; init; }
   }
-  private record StateId<T> : StateId where T: IState { };
+  private sealed record StateId<T> : StateId where T: IState { };
 
   private StateId<T> TakeId<T>() where T: IState {
     var id = new StateId<T> { Id = _nextId };

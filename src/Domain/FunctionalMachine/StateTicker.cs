@@ -3,23 +3,27 @@
 using System;
 using Character;
 using Chickensoft.Log;
+using ExhaustiveMatching;
 using Godot;
 
 public class StateTicker(CharacterOptions options) {
 
+  private readonly Log _log = new(nameof(StateTicker), new ConsoleWriter());
   private State _state = State.Idle;
   private float _lastGroundedTime = -1;
-  private readonly Log _log = new(nameof(StateTicker), new ConsoleWriter());
-  private int _jumpsSinceGrounded = 0;
+  private float _lastAttackTime = -1;
+  private int _jumpsSinceGrounded;
 
 
   public DebugInfo CurrentDebugInfo(CharacterContext ctx) => _state switch {
     State.Idle => new DebugInfo(Colors.Black, "Idle"),
     State.Walking => new DebugInfo(Colors.Yellow, "Walking"),
     State.JumpingUp => new DebugInfo(Colors.Blue, "Jumping Up"),
-    State.Falling when !IsCoyoteFalling(ctx) => new DebugInfo(Colors.Red, "Falling"),
-    State.Falling when IsCoyoteFalling(ctx) => new DebugInfo(Colors.Purple, "Coyote"),
-    _ => throw new ArgumentOutOfRangeException(nameof(_state), _state, null)
+    State.Falling => IsCoyoteFalling(ctx) ?
+      new DebugInfo(Colors.Orange, "Coyote Falling") :
+      new DebugInfo(Colors.Green, "Falling"),
+    State.Attacking => new DebugInfo(Colors.Red, "Attack"),
+    _ => throw ExhaustiveMatch.Failed(ctx),
   };
 
   public void Tick(CharacterContext ctx) {
@@ -48,6 +52,8 @@ public class StateTicker(CharacterOptions options) {
 
   private void TickState(State state, CharacterContext ctx) {
     switch (state) {
+      default:
+        throw ExhaustiveMatch.Failed(state);
       case State.Idle:
         ctx.ApplyGravity(options.Gravity);
         break;
@@ -68,16 +74,22 @@ public class StateTicker(CharacterOptions options) {
         ctx.Physics.SetHorizontal(ctx.Input.MoveAxis * options.MoveSpeed);
         ctx.ApplyGravity(options.Gravity);
         break;
-      default:
-        throw new ArgumentOutOfRangeException(nameof(state), state, null);
+      case State.Attacking:
+        ctx.Combat.Hit(HitType.Punch);
+        break;
     }
   }
 
   private State? CheckTransition(State current, CharacterContext ctx) {
     switch(current) {
+      default:
+        throw ExhaustiveMatch.Failed(current);
       case State.Idle:
         if(Math.Abs(ctx.Input.MoveAxis) > options.DeadZone) {
           return State.Walking;
+        }
+        if (ctx.Input.Attack.Pressed) {
+          return State.Attacking;
         }
         if(ctx.Input.Jump.Pressed) {
           return State.JumpingUp;
@@ -91,6 +103,9 @@ public class StateTicker(CharacterOptions options) {
         if(Math.Abs(ctx.Input.MoveAxis) < options.DeadZone) {
           return State.Idle;
         }
+        if (ctx.Input.Attack.Pressed) {
+          return State.Attacking;
+        }
         if(ctx.Input.Jump.Pressed) {
           return State.JumpingUp;
         }
@@ -103,12 +118,18 @@ public class StateTicker(CharacterOptions options) {
         if (ctx.Physics.VerticalVelocity < 0) {
           return State.Falling;
         }
+        if (ctx.Input.Attack.Pressed) {
+          return State.Attacking;
+        }
 
         break;
 
       case State.Falling:
         if (ctx.Physics.IsGrounded) {
           return State.Idle;
+        }
+        if (ctx.Input.Attack.Pressed) {
+          return State.Attacking;
         }
 
         if (ctx.Input.Jump.Pressed) {
@@ -120,6 +141,11 @@ public class StateTicker(CharacterOptions options) {
           }
         }
         break;
+      case State.Attacking:
+        if (ctx.Clock.TimeSince(_lastAttackTime) > options.AttackDuration) {
+          return ctx.Physics.IsGrounded ? State.Idle : State.Falling;
+        }
+        break;
     }
 
     return null;
@@ -127,6 +153,9 @@ public class StateTicker(CharacterOptions options) {
 
   private void Enter(State state, CharacterContext ctx) {
     switch(state) {
+      default:
+        throw ExhaustiveMatch.Failed(state);
+
       case State.Idle:
         ctx.Physics.SetHorizontal(0);
         break;
@@ -141,11 +170,18 @@ public class StateTicker(CharacterOptions options) {
 
       case State.Falling:
         break;
+
+      case State.Attacking:
+        _lastAttackTime = ctx.Clock.Now;
+        break;
     }
   }
 
   private void Exit(State state, CharacterContext ctx) {
     switch(state) {
+      default:
+        throw ExhaustiveMatch.Failed(state);
+
       case State.Idle:
         _lastGroundedTime = ctx.Clock.Now;
         _jumpsSinceGrounded = 0;
@@ -162,6 +198,9 @@ public class StateTicker(CharacterOptions options) {
 
       case State.Falling:
         break;
+
+      case State.Attacking:
+        break;
     }
   }
 
@@ -177,6 +216,7 @@ public class StateTicker(CharacterOptions options) {
     Idle,
     Walking,
     JumpingUp,
-    Falling
+    Falling,
+    Attacking,
   }
 }

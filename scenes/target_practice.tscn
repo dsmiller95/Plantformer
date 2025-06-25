@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bltcec1ujsq0e"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://rtiuyy38j60t" path="res://assets/Physics/target.tres" id="1_874dn"]
+[ext_resource type="Script" uid="uid://daj7qoknf763r" path="res://src/TargetFloater.cs" id="2_dr50u"]
+[ext_resource type="Texture2D" uid="uid://ln741ndg1ul6" path="res://assets/sprites/target.png" id="2_vffqg"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqjwq"]
+radius = 16.0
+height = 32.0
+
+[node name="Target" type="Node2D"]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(-2, 0)
+physics_material_override = ExtResource("1_874dn")
+gravity_scale = 0.0
+inertia = 0.1
+can_sleep = false
+lock_rotation = true
+continuous_cd = 2
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("2_dr50u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CapsuleShape2D_lqjwq")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("2_vffqg")

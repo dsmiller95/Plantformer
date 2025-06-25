@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdxwmuj7hndj"]
+[gd_scene load_steps=9 format=3 uid="uid://cdxwmuj7hndj"]
 
 [ext_resource type="Script" uid="uid://bom38vjvkhw7f" path="res://src/PlayerController.cs" id="1_rfsa2"]
 [ext_resource type="Script" uid="uid://c730x6ec71y4j" path="res://src/PositionalDebugDrawer.cs" id="2_wpkyv"]
 [ext_resource type="PackedScene" uid="uid://buya1tif1jmx5" path="res://scenes/debug_drawer_segment.tscn" id="3_q780c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqjwq"]
+radius = 8.0
 
 [sub_resource type="Gradient" id="Gradient_8ec3e"]
 
@@ -16,19 +17,30 @@ height = 10
 color_ramp = SubResource("Gradient_8ec3e")
 noise = SubResource("FastNoiseLite_38a0m")
 
-[node name="CharacterController" type="CharacterBody2D" node_paths=PackedStringArray("DebugDrawer")]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q780c"]
+radius = 5.0
+height = 12.0
+
+[node name="Character" type="Node2D"]
+
+[node name="Character physics body" type="CharacterBody2D" parent="." node_paths=PackedStringArray("DebugDrawer")]
 script = ExtResource("1_rfsa2")
 DebugDrawer = NodePath("DebugDrawer")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character physics body"]
 shape = SubResource("CapsuleShape2D_lqjwq")
 
-[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
-position = Vector2(0.500009, 0.250011)
+[node name="Sprite2D" type="Sprite2D" parent="Character physics body/CollisionShape2D"]
 scale = Vector2(1.5, 2.65)
 texture = SubResource("NoiseTexture2D_7omc5")
 
-[node name="DebugDrawer" type="Node2D" parent="." node_paths=PackedStringArray("SegmentParent")]
+[node name="Hurtbox_Punch" type="Area2D" parent="Character physics body"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character physics body/Hurtbox_Punch"]
+position = Vector2(14, 0)
+shape = SubResource("CapsuleShape2D_q780c")
+
+[node name="DebugDrawer" type="Node2D" parent="Character physics body" node_paths=PackedStringArray("SegmentParent")]
 script = ExtResource("2_wpkyv")
 SegmentPrefab = ExtResource("3_q780c")
-SegmentParent = NodePath("..")
+SegmentParent = NodePath("../..")

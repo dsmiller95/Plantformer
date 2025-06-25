@@ -10,6 +10,7 @@ using Godot;
 
 namespace Plantformer;
 
+using Chickensoft.Log;
 using Domain.Character;
 using Domain.FunctionalMachine;
 using Domain.StateInterfaces;
@@ -21,12 +22,15 @@ public partial class PlayerController : CharacterBody2D {
   public PositionalDebugDrawer? DebugDrawer;
 
   private readonly GodotInput _input = new();
+  private readonly Log _log = new(nameof(PlayerController), new ConsoleWriter());
   private GodotPhysics _physics;
+  private GodotCombat _combat;
   private StateMachine _stateMachine;
   private StateTicker _stateTicker;
 
-  public override void _Ready() {
+  public PlayerController() {
     _physics = new GodotPhysics(this);
+    _combat = new GodotCombat();
 
     var options = new CharacterOptions {
       MoveSpeed = 400f,
@@ -38,6 +42,7 @@ public partial class PlayerController : CharacterBody2D {
       JumpArrestGravity = -5000,
       CoyoteTime = 0.18f,
       AirJumps = 1f, // double jump
+      AttackDuration = 0.2f,
     };
 
     _stateMachine = StateGraph.Build(options);
@@ -45,7 +50,7 @@ public partial class PlayerController : CharacterBody2D {
   }
 
   public override void _PhysicsProcess(double delta) {
-    var context = new CharacterContext(new GodotClock(delta), _input, _physics);
+    var context = new CharacterContext(new GodotClock(delta), _input, _physics, _combat);
     // _stateMachine.Tick(context);
     _stateTicker.Tick(context);
     DebugDrawer?.AppendDraw(_stateTicker.CurrentDebugInfo(context));
@@ -64,7 +69,7 @@ public partial class PlayerController : CharacterBody2D {
     public float MoveAxis => Input.GetAxis("move_left", "move_right");
     public PressedState Crouch => GetPressedState("crouch");
 
-    private PressedState GetPressedState(string action) {
+    private static PressedState GetPressedState(string action) {
       if (Input.IsActionJustPressed(action)) {
         return new PressedState(false, true);
       }
@@ -86,5 +91,13 @@ public partial class PlayerController : CharacterBody2D {
     public float VerticalVelocity => -body.Velocity.Y; // negative = up. flip so negative = down
     public void SetHorizontal(float vx) => body.Velocity = body.Velocity with { X = vx };
     public void SetVertical(float vy) => body.Velocity = body.Velocity with { Y = -vy };
+  }
+
+  private sealed class GodotCombat() : ICharacterCombat {
+    private readonly Log _log = new(nameof(PlayerController), new ConsoleWriter());
+    public bool Hit(HitType type) {
+      _log.Print($"Hit with {type}");
+      return false;
+    }
   }
 }

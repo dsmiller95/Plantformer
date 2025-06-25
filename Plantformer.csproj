@@ -7,6 +7,7 @@
     <RootNamespace>Plantformer</RootNamespace>
     <!-- Catch compiler-mismatch issues with the Introspection generator as early as possible -->
     <WarningsAsErrors>CS9057</WarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Required for some nuget packages to work -->
     <!-- godotengine/godot/issues/42271#issuecomment-751423827 -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -51,11 +52,16 @@
   <ItemGroup>
     <!-- Production dependencies go here! -->
     <PackageReference Include="Chickensoft.GameTools" Version="2.0.19" />
+    <PackageReference Include="ExhaustiveMatching.Analyzer" Version="0.5.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(RunTests)' != 'true'">
     <Compile Remove="test/**/*.cs" />
     <None Remove="test/**/*" />
     <EmbeddedResource Remove="test/**/*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="scenes\" />
   </ItemGroup>
 </Project>

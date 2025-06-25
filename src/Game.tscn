@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cywpu6lxdjhuu"]
+[gd_scene load_steps=5 format=3 uid="uid://cywpu6lxdjhuu"]
 
 [ext_resource type="Script" uid="uid://dlpnodv0qc0uo" path="res://src/Game.cs" id="1_17mmo"]
 [ext_resource type="PackedScene" uid="uid://cdxwmuj7hndj" path="res://scenes/character_controller.tscn" id="2_lqjwq"]
 [ext_resource type="PackedScene" uid="uid://d3y4vq8pbq0j4" path="res://scenes/obstacles/platform.tscn" id="3_lqjwq"]
+[ext_resource type="PackedScene" uid="uid://bltcec1ujsq0e" path="res://scenes/target_practice.tscn" id="4_7omc5"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -62,6 +63,18 @@ position = Vector2(551, 111)
 position = Vector2(1123, 1046)
 scale = Vector2(4.53295, 0.445604)
 
+[node name="Floor20" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1120, -17)
+scale = Vector2(4.53295, 0.445604)
+
+[node name="Floor18" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(2259, 364)
+scale = Vector2(0.0984927, 19.5891)
+
+[node name="Floor19" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(-7, 579)
+scale = Vector2(0.0984927, 19.5891)
+
 [node name="Floor2" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
 position = Vector2(573, 621)
 
@@ -95,5 +108,31 @@ scale = Vector2(0.0870458, 0.354152)
 [node name="Floor9" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
 position = Vector2(37, 533)
 scale = Vector2(0.0870458, 0.354152)
+
+[node name="Targets" type="Node2D" parent="Node2D"]
+
+[node name="Target" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(464, 238)
+
+[node name="Target2" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(812, 406)
+
+[node name="Target3" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(1083, 495)
+
+[node name="Target4" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(812, 694)
+
+[node name="Target5" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(417, 850)
+
+[node name="Target6" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(1099, 686)
+
+[node name="Target7" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(156, 589)
+
+[node name="Target8" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(713, 840)
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]

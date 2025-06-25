@@ -13,4 +13,6 @@ public record CharacterOptions {
   /// Number of jumps that can be made after the first jump off the ground (or coyotied)
   /// </summary>
   public required float AirJumps { get; init; }
+
+  public required float AttackDuration { get; init; }
 }

@@ -173,14 +173,11 @@ csharp_style_var_for_built_in_types = true:warning
 csharp_style_var_when_type_is_apparent = true:warning
 csharp_style_var_elsewhere = true:warning
 # Expression-bodied members
-csharp_style_expression_bodied_methods = true:warning
-csharp_style_expression_bodied_constructors = false:warning
 csharp_style_expression_bodied_operators = true:warning
 csharp_style_expression_bodied_properties = true:warning
 csharp_style_expression_bodied_indexers = true:warning
 csharp_style_expression_bodied_accessors = true:warning
 csharp_style_expression_bodied_lambdas = true:warning
-csharp_style_expression_bodied_local_functions = true:warning
 # Pattern matching preferences
 csharp_style_pattern_matching_over_is_with_cast_check = true:warning
 csharp_style_pattern_matching_over_as_with_null_check = true:warning
@@ -465,3 +462,7 @@ dotnet_diagnostic.rcs1238.severity = none
 dotnet_diagnostic.ide0046.severity = none
 # Allow "unnecessary" blank lines for comments
 dotnet_diagnostic.rcs1036.severity = none
+# Allow methods to return an interface when they could choose to return a concrete type.
+dotnet_diagnostic.ca1859.severity = none
+# Allow private types which are not derived from to be unsealed. im not making a library, so this does not matter.
+dotnet_diagnostic.ca1852.severity = none

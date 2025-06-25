@@ -1,4 +1,4 @@
-﻿namespace Plantformer;
+namespace Plantformer;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +15,14 @@ public partial class PositionalDebugDrawer: Node2D {
 
   public void AppendDraw(DebugInfo debugPoint) {
 
-    var segment = _segments.LastOrDefault();
-    if (segment == null || segment.Info != debugPoint) {
-      segment = (PositionalDebugDrawerSegment)SegmentPrefab.Instantiate();
-      segment.Initialize(debugPoint);
-      SegmentParent.GetParent().AddChild(segment);
-      _segments.Add(segment);
-    }
+	var segment = _segments.LastOrDefault();
+	if (segment == null || segment.Info != debugPoint) {
+	  segment = (PositionalDebugDrawerSegment)SegmentPrefab.Instantiate();
+	  segment.Initialize(debugPoint);
+	  SegmentParent.GetParent().AddChild(segment);
+	  _segments.Add(segment);
+	}
 
-    segment.AppendPosition(GlobalPosition);
+	segment.AppendPosition(GlobalPosition);
   }
 }
