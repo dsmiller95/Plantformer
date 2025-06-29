@@ -16,6 +16,7 @@ using Domain.Character;
 using Domain.FunctionalMachine;
 using Domain.StateInterfaces;
 using Domain.States;
+using ExhaustiveMatching;
 using Utilities;
 
 public partial class PlayerController : CharacterBody2D {
@@ -105,8 +106,23 @@ public partial class PlayerController : CharacterBody2D {
   private sealed class GodotPhysics(CharacterBody2D body) : ICharacterPhysics {
     public bool IsGrounded => body.IsOnFloor();
     public float VerticalVelocity => -body.Velocity.Y; // negative = up. flip so negative = down
-    public void SetHorizontal(float vx) => body.Velocity = body.Velocity with { X = vx };
-    public void SetVertical(float vy) => body.Velocity = body.Velocity with { Y = -vy };
+    public void SetFacing(FacingDirection direction) {
+      body.Scale = new Vector2(
+        direction switch {
+          FacingDirection.Left => -1f,
+          FacingDirection.Right => 1f,
+          _ => throw ExhaustiveMatch.Failed(direction),
+        },
+        body.Scale.Y);
+    }
+
+    public void SetHorizontal(float vx) {
+      body.Velocity = body.Velocity with { X = vx };
+    }
+
+    public void SetVertical(float vy) {
+      body.Velocity = body.Velocity with { Y = -vy };
+    }
   }
 
   private sealed class GodotCombat(CollisionShape2D HurtboxShape, Area2D HurtboxArea) : ICharacterCombat {

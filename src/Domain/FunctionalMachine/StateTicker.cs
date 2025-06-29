@@ -58,11 +58,11 @@ public class StateTicker(CharacterOptions options) {
         ctx.ApplyGravity(options.Gravity);
         break;
       case State.Walking:
-        ctx.Physics.SetHorizontal(ctx.Input.MoveAxis * options.MoveSpeed);
+        ctx.Physics.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
         ctx.ApplyGravity(options.Gravity);
         break;
       case State.JumpingUp:
-        ctx.Physics.SetHorizontal(ctx.Input.MoveAxis * options.MoveSpeed);
+        ctx.Physics.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
         if (ctx.Input.Jump.Down) {
           ctx.ApplyGravity(options.JumpGravity);
         }
@@ -71,7 +71,7 @@ public class StateTicker(CharacterOptions options) {
         }
         break;
       case State.Falling:
-        ctx.Physics.SetHorizontal(ctx.Input.MoveAxis * options.MoveSpeed);
+        ctx.Physics.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
         ctx.ApplyGravity(options.Gravity);
         break;
       case State.Attacking:

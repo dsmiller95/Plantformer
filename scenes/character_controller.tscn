@@ -1,21 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://cdxwmuj7hndj"]
+[gd_scene load_steps=7 format=3 uid="uid://cdxwmuj7hndj"]
 
 [ext_resource type="Script" uid="uid://bom38vjvkhw7f" path="res://src/PlayerController.cs" id="1_rfsa2"]
+[ext_resource type="Texture2D" uid="uid://cqdyelf2mi5jj" path="res://assets/sprites/character/Brawler.aseprite" id="2_2rfdc"]
 [ext_resource type="Script" uid="uid://c730x6ec71y4j" path="res://src/PositionalDebugDrawer.cs" id="2_wpkyv"]
 [ext_resource type="PackedScene" uid="uid://buya1tif1jmx5" path="res://scenes/debug_drawer_segment.tscn" id="3_q780c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lqjwq"]
 radius = 8.0
-
-[sub_resource type="Gradient" id="Gradient_8ec3e"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_38a0m"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7omc5"]
-width = 10
-height = 10
-color_ramp = SubResource("Gradient_8ec3e")
-noise = SubResource("FastNoiseLite_38a0m")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q780c"]
 radius = 8.0
@@ -33,8 +24,9 @@ HurtboxShape = NodePath("Hurtbox_Punch/CollisionShape2D")
 shape = SubResource("CapsuleShape2D_lqjwq")
 
 [node name="Sprite2D" type="Sprite2D" parent="Character physics body/CollisionShape2D"]
-scale = Vector2(1.5, 2.65)
-texture = SubResource("NoiseTexture2D_7omc5")
+position = Vector2(2.38419e-07, -1.13687e-13)
+scale = Vector2(1.875, 1.875)
+texture = ExtResource("2_2rfdc")
 
 [node name="Hurtbox_Punch" type="Area2D" parent="Character physics body"]
 
@@ -46,3 +38,6 @@ shape = SubResource("CapsuleShape2D_q780c")
 script = ExtResource("2_wpkyv")
 SegmentPrefab = ExtResource("3_q780c")
 SegmentParent = NodePath("../..")
+
+[node name="Camera2D" type="Camera2D" parent="Character physics body"]
+zoom = Vector2(2, 2)

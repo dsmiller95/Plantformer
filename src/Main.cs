@@ -14,14 +14,14 @@ using Chickensoft.GoDotTest;
 // Game.cs instead.
 
 public partial class Main : Node2D {
-  public Vector2I DesignResolution => Display.UHD4k;
+  public Vector2I DesignResolution => Display.FullHD;
 #if RUN_TESTS
   public TestEnvironment Environment = default!;
 #endif
 
   public override void _Ready() {
     // Correct any erroneous scaling and guess sensible defaults.
-    GetWindow().LookGood(WindowScaleBehavior.UIFixed, DesignResolution);
+    GetWindow().LookGood(WindowScaleBehavior.UIProportional, DesignResolution);
 
 #if RUN_TESTS
     // If this is a debug build, use GoDotTest to examine the
