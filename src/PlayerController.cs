@@ -10,6 +10,7 @@ using Godot;
 
 namespace Plantformer;
 
+using System.Linq;
 using Chickensoft.Log;
 using Domain.Character;
 using Domain.FunctionalMachine;
@@ -111,6 +112,13 @@ public partial class PlayerController : CharacterBody2D {
   private sealed class GodotCombat(CollisionShape2D HurtboxShape, Area2D HurtboxArea) : ICharacterCombat {
     private readonly Log _log = new(nameof(PlayerController), new ConsoleWriter());
     public bool Hit(HitType type) {
+
+      foreach (var hitTarget in HurtboxArea.GetOverlappingBodies()
+                 .OfType<RigidBody2D>())
+      {
+        hitTarget.ApplyImpulse(new Vector2(1000, -1000f));
+      }
+
       HurtboxShape.Visible = true;
       _log.Print($"Hit with {type}");
       return false;
