@@ -15,22 +15,27 @@ using Domain.Character;
 using Domain.FunctionalMachine;
 using Domain.StateInterfaces;
 using Domain.States;
+using Utilities;
 
 public partial class PlayerController : CharacterBody2D {
 
   [Export]
   public PositionalDebugDrawer? DebugDrawer;
+  [Export]
+  public Area2D? HurtboxPunch;
+  [Export]
+  public CollisionShape2D? HurtboxShape;
+
 
   private readonly GodotInput _input = new();
   private readonly Log _log = new(nameof(PlayerController), new ConsoleWriter());
   private GodotPhysics _physics;
-  private GodotCombat _combat;
+  private GodotCombat? _combat;
   private StateMachine _stateMachine;
   private StateTicker _stateTicker;
 
   public PlayerController() {
     _physics = new GodotPhysics(this);
-    _combat = new GodotCombat();
 
     var options = new CharacterOptions {
       MoveSpeed = 400f,
@@ -49,9 +54,19 @@ public partial class PlayerController : CharacterBody2D {
     _stateTicker = new StateTicker(options);
   }
 
+  public override void _Ready() {
+    HurtboxPunch.AssertSetInInspector();
+    HurtboxShape.AssertSetInInspector();
+
+    _combat = new GodotCombat(HurtboxShape, HurtboxPunch);
+  }
+
   public override void _PhysicsProcess(double delta) {
-    var context = new CharacterContext(new GodotClock(delta), _input, _physics, _combat);
-    // _stateMachine.Tick(context);
+    HurtboxShape.AssertSetInInspector();
+
+    var context = new CharacterContext(new GodotClock(delta), _input, _physics, _combat ?? NullCharacterCombat.Instance);
+
+    HurtboxShape.Visible = false;
     _stateTicker.Tick(context);
     DebugDrawer?.AppendDraw(_stateTicker.CurrentDebugInfo(context));
 
@@ -93,9 +108,10 @@ public partial class PlayerController : CharacterBody2D {
     public void SetVertical(float vy) => body.Velocity = body.Velocity with { Y = -vy };
   }
 
-  private sealed class GodotCombat() : ICharacterCombat {
+  private sealed class GodotCombat(CollisionShape2D HurtboxShape, Area2D HurtboxArea) : ICharacterCombat {
     private readonly Log _log = new(nameof(PlayerController), new ConsoleWriter());
     public bool Hit(HitType type) {
+      HurtboxShape.Visible = true;
       _log.Print($"Hit with {type}");
       return false;
     }

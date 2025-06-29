@@ -23,9 +23,11 @@ height = 12.0
 
 [node name="Character" type="Node2D"]
 
-[node name="Character physics body" type="CharacterBody2D" parent="." node_paths=PackedStringArray("DebugDrawer")]
+[node name="Character physics body" type="CharacterBody2D" parent="." node_paths=PackedStringArray("DebugDrawer", "HurtboxPunch", "HurtboxShape")]
 script = ExtResource("1_rfsa2")
 DebugDrawer = NodePath("DebugDrawer")
+HurtboxPunch = NodePath("Hurtbox_Punch")
+HurtboxShape = NodePath("Hurtbox_Punch/CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Character physics body"]
 shape = SubResource("CapsuleShape2D_lqjwq")

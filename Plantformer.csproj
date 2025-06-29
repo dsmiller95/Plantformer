@@ -7,7 +7,6 @@
     <RootNamespace>Plantformer</RootNamespace>
     <!-- Catch compiler-mismatch issues with the Introspection generator as early as possible -->
     <WarningsAsErrors>CS9057</WarningsAsErrors>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Required for some nuget packages to work -->
     <!-- godotengine/godot/issues/42271#issuecomment-751423827 -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -32,6 +31,14 @@
   <PropertyGroup Condition="&#xA;        ('$(Configuration)' == 'Debug' or '$(Configuration)' == 'ExportDebug')&#xA;        and '$(SkipTests)' != 'true' ">
     <RunTests>true</RunTests>
     <DefineConstants>$(DefineConstants);RUN_TESTS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' or '$(Configuration)' == 'ExportDebug'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' != 'Debug' and '$(Configuration)' != 'ExportDebug'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(RunTests)' == 'true'">
