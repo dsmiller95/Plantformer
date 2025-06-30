@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cywpu6lxdjhuu"]
+[gd_scene load_steps=6 format=3 uid="uid://cywpu6lxdjhuu"]
 
 [ext_resource type="Script" uid="uid://dlpnodv0qc0uo" path="res://src/Game.cs" id="1_17mmo"]
+[ext_resource type="Script" uid="uid://bmrshbuhyb56s" path="res://src/GlobalConfig.cs" id="2_km1yn"]
 [ext_resource type="PackedScene" uid="uid://cdxwmuj7hndj" path="res://scenes/character_controller.tscn" id="2_lqjwq"]
 [ext_resource type="PackedScene" uid="uid://d3y4vq8pbq0j4" path="res://scenes/obstacles/platform.tscn" id="3_lqjwq"]
 [ext_resource type="PackedScene" uid="uid://bltcec1ujsq0e" path="res://scenes/target_practice.tscn" id="4_7omc5"]
@@ -13,6 +14,115 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_17mmo")
+
+[node name="configuration provider" type="Node2D" parent="."]
+script = ExtResource("2_km1yn")
+DrawNames = false
+
+[node name="Node2D" type="Node2D" parent="configuration provider"]
+
+[node name="CharacterBody2D" parent="configuration provider/Node2D" instance=ExtResource("2_lqjwq")]
+position = Vector2(405, 494)
+
+[node name="Env" type="Node2D" parent="configuration provider/Node2D"]
+position = Vector2(0, -1)
+
+[node name="Floor" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(304, 682)
+
+[node name="Floor13" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(223, 806)
+
+[node name="Floor14" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(324, 925)
+
+[node name="Floor15" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1094, 820)
+
+[node name="Floor16" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1703, 831)
+
+[node name="Floor11" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(154, 208)
+
+[node name="Floor12" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(551, 111)
+
+[node name="Floor10" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1123, 1046)
+scale = Vector2(4.53295, 0.445604)
+
+[node name="Floor20" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1120, -17)
+scale = Vector2(4.53295, 0.445604)
+
+[node name="Floor18" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(2259, 364)
+scale = Vector2(0.0984927, 19.5891)
+
+[node name="Floor19" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(-7, 579)
+scale = Vector2(0.0984927, 19.5891)
+
+[node name="Floor2" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(573, 621)
+
+[node name="Floor3" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(837, 500)
+
+[node name="Floor4" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(561, 357)
+scale = Vector2(0.0870458, 0.354152)
+
+[node name="Floor5" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(439, 343)
+scale = Vector2(0.0870458, 0.354152)
+
+[node name="Floor6" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(321, 335)
+scale = Vector2(0.0870458, 0.354152)
+
+[node name="Floor7" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(575, 209)
+scale = Vector2(0.0870458, 0.354152)
+
+[node name="Floor17" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(749, 214)
+scale = Vector2(0.0870458, 0.354152)
+
+[node name="Floor8" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(1105, 359)
+scale = Vector2(0.0870458, 0.354152)
+
+[node name="Floor9" parent="configuration provider/Node2D/Env" instance=ExtResource("3_lqjwq")]
+position = Vector2(37, 533)
+scale = Vector2(0.0870458, 0.354152)
+
+[node name="Targets" type="Node2D" parent="configuration provider/Node2D"]
+
+[node name="Target" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(464, 238)
+
+[node name="Target2" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(812, 406)
+
+[node name="Target3" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(1083, 495)
+
+[node name="Target4" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(812, 694)
+
+[node name="Target5" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(417, 850)
+
+[node name="Target6" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(1099, 686)
+
+[node name="Target7" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(156, 589)
+
+[node name="Target8" parent="configuration provider/Node2D/Targets" instance=ExtResource("4_7omc5")]
+position = Vector2(713, 840)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -29,110 +139,5 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "Test Button"
-
-[node name="Node2D" type="Node2D" parent="."]
-
-[node name="CharacterBody2D" parent="Node2D" instance=ExtResource("2_lqjwq")]
-position = Vector2(405, 494)
-
-[node name="Env" type="Node2D" parent="Node2D"]
-position = Vector2(0, -1)
-
-[node name="Floor" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(304, 682)
-
-[node name="Floor13" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(223, 806)
-
-[node name="Floor14" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(324, 925)
-
-[node name="Floor15" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(1094, 820)
-
-[node name="Floor16" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(1703, 831)
-
-[node name="Floor11" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(154, 208)
-
-[node name="Floor12" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(551, 111)
-
-[node name="Floor10" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(1123, 1046)
-scale = Vector2(4.53295, 0.445604)
-
-[node name="Floor20" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(1120, -17)
-scale = Vector2(4.53295, 0.445604)
-
-[node name="Floor18" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(2259, 364)
-scale = Vector2(0.0984927, 19.5891)
-
-[node name="Floor19" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(-7, 579)
-scale = Vector2(0.0984927, 19.5891)
-
-[node name="Floor2" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(573, 621)
-
-[node name="Floor3" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(837, 500)
-
-[node name="Floor4" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(561, 357)
-scale = Vector2(0.0870458, 0.354152)
-
-[node name="Floor5" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(439, 343)
-scale = Vector2(0.0870458, 0.354152)
-
-[node name="Floor6" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(321, 335)
-scale = Vector2(0.0870458, 0.354152)
-
-[node name="Floor7" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(575, 209)
-scale = Vector2(0.0870458, 0.354152)
-
-[node name="Floor17" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(749, 214)
-scale = Vector2(0.0870458, 0.354152)
-
-[node name="Floor8" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(1105, 359)
-scale = Vector2(0.0870458, 0.354152)
-
-[node name="Floor9" parent="Node2D/Env" instance=ExtResource("3_lqjwq")]
-position = Vector2(37, 533)
-scale = Vector2(0.0870458, 0.354152)
-
-[node name="Targets" type="Node2D" parent="Node2D"]
-
-[node name="Target" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(464, 238)
-
-[node name="Target2" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(812, 406)
-
-[node name="Target3" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(1083, 495)
-
-[node name="Target4" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(812, 694)
-
-[node name="Target5" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(417, 850)
-
-[node name="Target6" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(1099, 686)
-
-[node name="Target7" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(156, 589)
-
-[node name="Target8" parent="Node2D/Targets" instance=ExtResource("4_7omc5")]
-position = Vector2(713, 840)
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/TestButton" to="." method="OnTestButtonPressed"]
