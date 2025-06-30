@@ -107,13 +107,18 @@ public partial class PlayerController : CharacterBody2D {
     public bool IsGrounded => body.IsOnFloor();
     public float VerticalVelocity => -body.Velocity.Y; // negative = up. flip so negative = down
     public void SetFacing(FacingDirection direction) {
+      // negative scale actually becomes all fucky because these values are not stored directly
+      //  they are derieved and applied directly to the transformation matrix
+      //  and the matrix doesnt know the difference between -x VS -y and 180 deg rotation
+      //  https://docs.godotengine.org/en/stable/classes/class_node2d.html#class-node2d-property-scale
+      body.Rotation = 0f;
       body.Scale = new Vector2(
         direction switch {
           FacingDirection.Left => -1f,
           FacingDirection.Right => 1f,
           _ => throw ExhaustiveMatch.Failed(direction),
         },
-        body.Scale.Y);
+        1);
     }
 
     public void SetHorizontal(float vx) {
