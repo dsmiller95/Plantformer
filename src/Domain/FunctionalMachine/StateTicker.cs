@@ -115,7 +115,7 @@ public class StateTicker(CharacterOptions options) {
         break;
 
       case State.JumpingUp:
-        if (ctx.Physics.VerticalVelocity < 0) {
+        if (ctx.Physics.Velocity.Y < 0) {
           return State.Falling;
         }
         if (ctx.Input.Attack.Pressed) {
@@ -157,14 +157,14 @@ public class StateTicker(CharacterOptions options) {
         throw ExhaustiveMatch.Failed(state);
 
       case State.Idle:
-        ctx.Physics.SetHorizontal(0);
+        ctx.Physics.Velocity = ctx.Physics.Velocity with { X = 0 };
         break;
 
       case State.Walking:
         break;
 
       case State.JumpingUp:
-        ctx.Physics.SetVertical(options.JumpSpeed);
+        ctx.Physics.Velocity = ctx.Physics.Velocity with { Y = options.JumpSpeed };
         _jumpsSinceGrounded += 1;
         break;
 
@@ -193,7 +193,8 @@ public class StateTicker(CharacterOptions options) {
         break;
 
       case State.JumpingUp:
-        ctx.Physics.SetVertical(Math.Min(0, ctx.Physics.VerticalVelocity));
+        var vy = Math.Min(0, ctx.Physics.Velocity.Y);
+        ctx.Physics.Velocity = ctx.Physics.Velocity with { Y = vy };
         break;
 
       case State.Falling:

@@ -31,6 +31,6 @@ public record IdleState(
   }
 
   public void Enter(CharacterContext context) {
-    context.Physics.SetHorizontal(0);
+    context.Physics.Velocity = context.Physics.Velocity with { X = 0 };
   }
 }

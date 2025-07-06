@@ -27,7 +27,8 @@ public record FallingState(
   }
 
   public void Tick(CharacterContext context) {
-    context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
+    var vx = context.Input.MoveAxis * Options.MoveSpeed;
+    context.Physics.Velocity = context.Physics.Velocity with { X = vx };
     context.ApplyGravity(Options.Gravity);
   }
 

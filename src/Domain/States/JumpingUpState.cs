@@ -8,7 +8,7 @@ public record JumpingUpState(
   CharacterOptions Options,
   IStateDefinition FallingState) : IState {
   public IStateDefinition? Transition(CharacterContext context) {
-    if (!context.Input.Jump.Down || context.Physics.VerticalVelocity < 0) {
+    if (!context.Input.Jump.Down || context.Physics.Velocity.Y < 0) {
       return FallingState;
     }
 
@@ -16,15 +16,17 @@ public record JumpingUpState(
   }
 
   public void Tick(CharacterContext context) {
-    context.Physics.SetHorizontal(context.Input.MoveAxis * Options.MoveSpeed);
+    var vx = context.Input.MoveAxis * Options.MoveSpeed;
+    context.Physics.Velocity = context.Physics.Velocity with { X = vx };
     context.ApplyGravity(Options.JumpGravity);
   }
 
   public void Enter(CharacterContext context) {
-    context.Physics.SetVertical(Options.JumpSpeed);
+    context.Physics.Velocity = context.Physics.Velocity with { Y = Options.JumpSpeed };
   }
 
   public void Exit(CharacterContext context) {
-    context.Physics.SetVertical(Math.Min(0, context.Physics.VerticalVelocity));
+    var vy = Math.Min(0, context.Physics.Velocity.Y);
+    context.Physics.Velocity = context.Physics.Velocity with { Y = vy };
   }
 }
