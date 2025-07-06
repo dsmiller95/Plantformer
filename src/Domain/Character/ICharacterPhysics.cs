@@ -4,10 +4,21 @@ using Godot;
 
 public interface ICharacterPhysics {
   public bool IsGrounded { get; }
-  public float VerticalVelocity { get; }
-  public void SetFacing(FacingDirection direction);
-  public void SetHorizontal(float vx);
-  public void SetVertical(float vy);
+  public Vector2 Velocity { get; set; }
+  public FacingDirection Facing { get; set; }
+
+  public float VerticalVelocity => Velocity.Y;
+
+  public void SetFacing(FacingDirection direction) {
+    Facing = direction;
+  }
+  public void SetHorizontal(float vx) {
+    Velocity = Velocity with { X = vx };
+  }
+  public void SetVertical(float vy) {
+    Velocity = Velocity with { Y = vy }; // negative = up. flip so negative = down
+    GD.Print($"SetVertical: {vy}, Velocity: {Velocity}");
+  }
 
   public void SetHorizontalAndFacing(float vx) {
     SetHorizontal(vx);

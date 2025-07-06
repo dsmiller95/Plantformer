@@ -37,7 +37,7 @@ public partial class PlayerController : CharacterBody2D {
   private StateTicker _stateTicker;
 
   public PlayerController() {
-    _physics = new GodotPhysics(this);
+    _physics = GodotPhysics.CreateFromCharacterBody2D(this);
 
     var options = new CharacterOptions {
       MoveSpeed = 400f,
@@ -66,11 +66,16 @@ public partial class PlayerController : CharacterBody2D {
   public override void _PhysicsProcess(double delta) {
     HurtboxShape.AssertSetInInspector();
 
-    var context = new CharacterContext(new GodotClock(delta), _input, _physics, _combat ?? NullCharacterCombat.Instance);
+    var updatedPhysics = _physics.UpdatedFromCharacterBody2D(this);
+    var context = new CharacterContext(new GodotClock(delta), _input, updatedPhysics, _combat ?? NullCharacterCombat.Instance);
 
     HurtboxShape.Visible = false;
+
     _stateTicker.Tick(context);
+
     DebugDrawer?.AppendDraw(_stateTicker.CurrentDebugInfo(context));
+    updatedPhysics.ApplyToCharacterBody2D(_physics, this);
+    _physics = updatedPhysics;
 
     MoveAndSlide();
   }
@@ -103,10 +108,24 @@ public partial class PlayerController : CharacterBody2D {
     }
   }
 
-  private sealed class GodotPhysics(CharacterBody2D body) : ICharacterPhysics {
-    public bool IsGrounded => body.IsOnFloor();
-    public float VerticalVelocity => -body.Velocity.Y; // negative = up. flip so negative = down
-    public void SetFacing(FacingDirection direction) {
+  private sealed record GodotPhysics(bool IsGrounded, Vector2 Velocity, FacingDirection Facing) : ICharacterPhysics {
+    public Vector2 Velocity { get; set; } = Velocity;
+
+    public FacingDirection Facing { get; set; } = Facing;
+
+    public static GodotPhysics CreateFromCharacterBody2D(CharacterBody2D body) {
+      return new GodotPhysics(body.IsOnFloor(), body.Velocity * new Vector2(1, -1), FacingDirection.Left);
+    }
+    public GodotPhysics UpdatedFromCharacterBody2D(CharacterBody2D body) {
+      return new GodotPhysics(body.IsOnFloor(), body.Velocity * new Vector2(1, -1), Facing);
+    }
+
+    public void ApplyToCharacterBody2D(GodotPhysics previous, CharacterBody2D body) {
+      body.Velocity = Velocity * new Vector2(1, -1); // flip y axis
+      SetFacing(body, Facing);
+    }
+
+    private static void SetFacing(CharacterBody2D body, FacingDirection direction) {
       // negative scale actually becomes all fucky because these values are not stored directly
       //  they are derieved and applied directly to the transformation matrix
       //  and the matrix doesnt know the difference between -x VS -y and 180 deg rotation
@@ -119,14 +138,6 @@ public partial class PlayerController : CharacterBody2D {
           _ => throw ExhaustiveMatch.Failed(direction),
         },
         1);
-    }
-
-    public void SetHorizontal(float vx) {
-      body.Velocity = body.Velocity with { X = vx };
-    }
-
-    public void SetVertical(float vy) {
-      body.Velocity = body.Velocity with { Y = -vy };
     }
   }
 
