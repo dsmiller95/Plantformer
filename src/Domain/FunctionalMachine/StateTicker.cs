@@ -12,8 +12,8 @@ public class StateTicker(CharacterOptions options) {
   private State _state = State.Idle;
   private float _lastGroundedTime = -1;
   private float _lastAttackTime = -1;
+  private ulong _lastJumpFrame;
   private int _jumpsSinceGrounded;
-
 
   public DebugInfo CurrentDebugInfo(CharacterContext ctx) => _state switch {
     State.Idle => new DebugInfo(Colors.Black, "Idle"),
@@ -32,6 +32,7 @@ public class StateTicker(CharacterOptions options) {
     if(firstState != _state) {
       _log.Print($"Transitioned from {firstState} to {_state}");
     }
+
     TickState(_state, ctx);
   }
 
@@ -58,11 +59,11 @@ public class StateTicker(CharacterOptions options) {
         ctx.ApplyGravity(options.Gravity);
         break;
       case State.Walking:
-        ctx.Physics.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
+        ctx.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
         ctx.ApplyGravity(options.Gravity);
         break;
       case State.JumpingUp:
-        ctx.Physics.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
+        ctx.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
         if (ctx.Input.Jump.Down) {
           ctx.ApplyGravity(options.JumpGravity);
         }
@@ -71,7 +72,7 @@ public class StateTicker(CharacterOptions options) {
         }
         break;
       case State.Falling:
-        ctx.Physics.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
+        ctx.SetHorizontalAndFacing(ctx.Input.MoveAxis * options.MoveSpeed);
         ctx.ApplyGravity(options.Gravity);
         break;
       case State.Attacking:
@@ -115,7 +116,9 @@ public class StateTicker(CharacterOptions options) {
         break;
 
       case State.JumpingUp:
-        if (ctx.Physics.Velocity.Y < 0) {
+        // do not transition to Falling if we transitioned to JumpingUp this frame
+        if (ctx.Clock.Frame > _lastJumpFrame &&
+            ctx.Physics.Velocity.Y < 0) {
           return State.Falling;
         }
         if (ctx.Input.Attack.Pressed) {
@@ -157,15 +160,16 @@ public class StateTicker(CharacterOptions options) {
         throw ExhaustiveMatch.Failed(state);
 
       case State.Idle:
-        ctx.Physics.Velocity = ctx.Physics.Velocity with { X = 0 };
+        ctx.SetHorizontalAndFacing(0);
         break;
 
       case State.Walking:
         break;
 
       case State.JumpingUp:
-        ctx.Physics.Velocity = ctx.Physics.Velocity with { Y = options.JumpSpeed };
+        ctx.SetVerticalVelocity(options.JumpSpeed);
         _jumpsSinceGrounded += 1;
+        _lastJumpFrame = ctx.Clock.Frame;
         break;
 
       case State.Falling:
@@ -194,7 +198,7 @@ public class StateTicker(CharacterOptions options) {
 
       case State.JumpingUp:
         var vy = Math.Min(0, ctx.Physics.Velocity.Y);
-        ctx.Physics.Velocity = ctx.Physics.Velocity with { Y = vy };
+        ctx.SetVerticalVelocity(vy);
         break;
 
       case State.Falling:

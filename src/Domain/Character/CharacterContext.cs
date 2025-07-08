@@ -1,10 +1,19 @@
 namespace Plantformer.Domain.Character;
 
-using Godot;
+using Events;
 
-public record CharacterContext(IClock Clock, IInput Input, ICharacterPhysics Physics, ICharacterCombat Combat) {
+public record CharacterContext(IClock Clock, IInput Input, ICharacterPhysics Physics, ICharacterCombat Combat, IEventSink eventSink) {
   public void ApplyGravity(float g) {
     var acceleration = g * Clock.DeltaTime;
-    Physics.Velocity += new Vector2(0, 1) * acceleration;
+    eventSink.AppendEvent(new AddVerticalVelocity(acceleration));
+  }
+
+  public void SetHorizontalAndFacing(float vx) {
+    eventSink.AppendEvent(new SetHorizontalVelocity(vx, true));
+  }
+
+  public void SetVerticalVelocity(float vy) {
+    eventSink.AppendEvent(new SetVerticalVelocity(vy));
   }
 }
+
