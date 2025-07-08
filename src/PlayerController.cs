@@ -15,7 +15,6 @@ using Chickensoft.Log;
 using Domain.Character;
 using Domain.FunctionalMachine;
 using Domain.StateInterfaces;
-using Domain.States;
 using ExhaustiveMatching;
 using Utilities;
 
@@ -52,7 +51,6 @@ public partial class PlayerController : CharacterBody2D {
       AttackDuration = 0.2f,
     };
 
-    _stateMachine = StateGraph.Build(options);
     _stateTicker = new StateTicker(options);
   }
 
