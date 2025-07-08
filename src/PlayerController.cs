@@ -149,7 +149,6 @@ public partial class PlayerController : CharacterBody2D {
     }
   }
 
-
   private sealed class GodotCombat(CollisionShape2D HurtboxShape, Area2D HurtboxArea) : ICharacterCombat {
     private readonly Log _log = new(nameof(PlayerController), new ConsoleWriter());
     public bool Hit(HitType type) {
