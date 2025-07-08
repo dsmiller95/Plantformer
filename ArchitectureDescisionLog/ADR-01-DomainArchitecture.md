@@ -1,13 +1,17 @@
 ﻿
+# Problem
+
+An application architecture is needed to separate concerns and responsibilities.
+
 # Responsibility segregation
 
 ## Domain
-The domain handles all the game logic, to the maximum extend possible. It will
-store all state which it can. Some state is stored in the engine, such as physics
-engine, because we will not be implementing our own physics engine.
+The domain handles all the game logic, to the maximum extent possible. It will
+greedily store game state. Some state must be stored in the engine, such as physics data,
+because we will not be implementing our own physics engine.
 
 The domain is exposed as a single Tick() function which is called every frame
-and accepts a context object which contains all input and external state(physics).
+and accepts a context object which contains all input and external state (physics, time).
 The function returns a list of events to be executed and rendered by the bindings.
 
 The domain is responsible for:
