@@ -116,17 +116,17 @@ re-entrant queries:
 sequenceDiagram
   participant Godot
   participant Bindings
-  participant Domain
+  participant Domain.Char
   Bindings->>Godot: Input.keyDown(space)
   Godot-->>Bindings: true
-  Bindings->>Domain: Tick(Context(InputEvent(Attack), (0, 0)))
-  activate Domain
-  Domain->>Bindings: Query(Hitbox(Punch))
+  Bindings->>Domain.Char: Tick(Context(InputEvent(Attack), (0, 0)))
+  activate Domain.Char
+  Domain.Char->>Bindings: Query(Hitbox(Punch))
   Bindings ->>Godot: Hitbox.Punch.GetTargets()
   Godot-->>Bindings: [Target_A, Target_B]
-  Bindings-->>Domain: [Target_A, Target_B]
-  Domain-->>Bindings: OutputEvent(Target_A, ImpulseForce(100, 0))
-  deactivate Domain
+  Bindings-->>Domain.Char: [Target_A, Target_B]
+  Domain.Char-->>Bindings: OutputEvent(Target_A, ImpulseForce(100, 0))
+  deactivate Domain.Char
   Bindings->>Godot: Target_A.Physics.Impuslse(100, 0)
 ```
 
@@ -135,14 +135,48 @@ pre-emptive queries:
 sequenceDiagram
   participant Godot
   participant Bindings
-  participant Domain
+  participant Domain.Char
   Bindings->>Godot: Input.keyDown(space)
   Godot-->>Bindings: true
   Bindings ->>Godot: Hitbox.Punch.GetTargets()
   Godot-->>Bindings: [Target_A, Target_B]
-  Bindings->>Domain: InputEvent(Attack), Punch([Target_A, Target_B]))
-  activate Domain
-  Domain-->>Bindings: OutputEvent(Target_A, ImpulseForce(100, 0))
-  deactivate Domain
+  Bindings->>Domain.Char: InputEvent(Attack), Punch([Target_A, Target_B]))
+  activate Domain.Char
+  Domain.Char-->>Bindings: OutputEvent(Target_A, ImpulseForce(100, 0))
+  deactivate Domain.Char
   Bindings->>Godot: Target_A.Physics.Impuslse(100, 0)
 ```
+
+
+## Inter-entity interaction
+
+Message passing. Character triggers a Punch, it hits targets A and B,
+where does the logic pertaining to what happens when hit live?
+
+Options:
+- all in initiator: Character.HitTargets(Entity[]) does everything
+- all in target: Character -> entities.ForEach(Hit) -> IHittable.AmHit(HitParameters)
+- Data-oriented?
+  - IncomingHit struct could have:
+    - AttackerPos: Vector2
+    - Strength: float
+    - Weapon: Weapon
+    - Direction: Vector2
+  - TargetedIncomingHit:
+    - Hit: IncomingHit
+    - Resistance: percentage
+    - Armor: ArmorPiece[]
+  - HandleHit(TargetedIncomingHit): HitResult
+  - HitResult could have:
+    - Damage?: float
+    - ImpulseForce?: Vector2
+    - Target: IEntity
+  - ApplyResult?
+    - (HitResult result, IEntity target): IOutputEvent[]
+      - requires external OutputEvent dispatching
+      - allows pure-function processing
+      - separates hit intentions (damage) from health implementation (DecreaseHealthEvent) ?
+    - (HitResult result, Godot.Node target): void
+      - requires some level of dispatching of results to nodes - almost same as output events
+    - ApplyHitResultOutputEvent
+      - 
